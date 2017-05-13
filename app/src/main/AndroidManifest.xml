@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <application
@@ -40,6 +45,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".AbsenPulang"
@@ -47,6 +53,11 @@
         <activity
             android:name=".User"
             android:label="Tambah User"></activity>
+        <activity
+            android:name=".UploadFoto"
+            android:label="Test Upload Foto">
+
+        </activity>
     </application>
 
 </manifest>
