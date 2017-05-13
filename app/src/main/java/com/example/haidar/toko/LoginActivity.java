@@ -139,16 +139,19 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.absen_masuk:
-                //your code
-
-                Intent intent = new Intent(this, AbsenMasuk.class);
-                startActivity(intent);
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() ==  R.id.absen_masuk) {
+            startActivity( new Intent(this, AbsenMasuk.class));
         }
+        if (item.getItemId() ==  R.id.absen_pulang) {
+            startActivity( new Intent(this, AbsenPulang.class));
+
+        }
+        if (item.getItemId() ==  R.id.admin) {
+            startActivity( new Intent(this, LoginActivity.class));
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
