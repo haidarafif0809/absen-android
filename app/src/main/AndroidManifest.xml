@@ -3,7 +3,9 @@
     package="com.example.haidar.toko">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,13 +16,37 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".LokasiAbsen"
+            android:label="Tambah Lokasi Absen">
+
+            0.
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".ViewAllLokasi"
+            android:label="Data Lokasi Absen" />
+        <activity
+            android:name=".ViewLokasiAbsen"
+            android:label="Data Lokasi Absen"></activity>
+        <activity
+            android:name=".AbsenMasuk"
+            android:label="Absen Masuk">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AbsenPulang"
+            android:label="Absen Pulang"></activity>
+        <activity
+            android:name=".User"
+            android:label="Tambah User"></activity>
     </application>
 
 </manifest>
