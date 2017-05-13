@@ -538,23 +538,19 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
 
-        switch (item.getItemId()) {
-            case R.id.absen_masuk:
-                //your code
-
-                startActivity( new Intent(this, AbsenMasuk.class));
-
-            case R.id.absen_pulang:
-                //your code
-                startActivity(new Intent(this, AbsenPulang.class));
-            case R.id.admin:
-                //your code
-                startActivity(new Intent(this, LoginActivity.class));
-
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() ==  R.id.absen_masuk) {
+            startActivity( new Intent(this, AbsenMasuk.class));
         }
+        if (item.getItemId() ==  R.id.absen_pulang) {
+            startActivity( new Intent(this, AbsenPulang.class));
+
+        }
+        if (item.getItemId() ==  R.id.admin) {
+            startActivity( new Intent(this, LoginActivity.class));
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
