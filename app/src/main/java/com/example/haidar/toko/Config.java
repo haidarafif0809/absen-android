@@ -7,6 +7,9 @@ package com.example.haidar.toko;
 public class Config {
     //Address of our scripts of the CRUD
 
+
+
+
     public static final String urlAplikasi = "http://192.168.1.16/absen_android";
     public static final String URL_ADD_LOKASI = urlAplikasi+"/android/tambah_lokasi.php";
     public static final String URL_GET_ALL_LOKASI = urlAplikasi+"/android/data_lokasi.php";
@@ -19,9 +22,11 @@ public class Config {
     public static final String URL_PROSES_ABSEN_PULANG = urlAplikasi+"/android/absen_pulang.php";
 
     public static final String URL_ADD_USER = urlAplikasi+"/android/tambah_user.php";
+    public static final String URL_UPLOAD_FOTO = urlAplikasi+"/android/upload_foto.php";
 
 
     //Keys that will be used to send the request to php scripts
+    public static final String KEY_UPLOAD = "image";
     public static final String KEY_LOKASI_ID = "id";
     public static final String KEY_LATITUDE = "latitude";
     public static final String KEY_LONGITUDE = "longitude";
