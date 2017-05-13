@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/absen_masuk"
+        android:orderInCategory="100"
+        android:title="Absen Masuk"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/absen_pulang"
+        android:orderInCategory="100"
+        android:title="Absen Pulang"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/admin"
+        android:orderInCategory="100"
+        android:title="Admin"
+        app:showAsAction="never" />
+</menu>
