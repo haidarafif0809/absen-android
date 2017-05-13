@@ -5,11 +5,13 @@ package com.example.haidar.toko;
  */
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -18,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +46,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,36 +63,34 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
     private  Spinner spinnerLokasi;
     private TextView textLatitude,textLongitude,textJarakLokasiAbsen;
 
-    private   List<String> nama_lokasi_absen = new ArrayList<String>();
-    private   List<String> latitude_lokasi_absen = new ArrayList<String>();
-    private   List<String> longitude_lokasi_absen = new ArrayList<String>();
+
 
     // LogCat tag
     private static final String TAG = MainActivity.class.getSimpleName();
 
+   //variable untuk kebutuhan lokasi
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
-
     private Location mLastLocation;
-
     LocationManager locationManager ;
     boolean GpsStatus ;
-
-
-
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
+    private   List<String> nama_lokasi_absen = new ArrayList<String>();
+    private   List<String> latitude_lokasi_absen = new ArrayList<String>();
+    private   List<String> longitude_lokasi_absen = new ArrayList<String>();
 
-    // boolean flag to toggle periodic location updates
-    private boolean mRequestingLocationUpdates = false;
-
-    private LocationRequest mLocationRequest;
 
     // Location updates intervals in sec
-    private static int UPDATE_INTERVAL = 10000; // 10 sec
-    private static int FATEST_INTERVAL = 5000; // 5 sec
-    private static int DISPLACEMENT = 10; // 10 meters
+
     public static final Integer LOCATION = 0x1;
     public double latitude_saat_ini,longitude_saat_ini,latitude_absen,longitude_absen;
+
+    //variable untuk kebutuhan upload foto
+    private ImageView imageView;
+    private Bitmap bitmap;
+    private static final int CAMERA_REQUEST = 1888;
+    private boolean status_ambil_foto;
+
 
 
     @Override
@@ -101,11 +104,11 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
         textLatitude = (TextView) findViewById(R.id.latitude);
         textLongitude = (TextView) findViewById(R.id.longitude);
         textJarakLokasiAbsen = (TextView) findViewById(R.id.jarakKeLokasi);
-
         buttonMasuk = (Button) findViewById(R.id.buttonMasuk);
-
+        imageView = (ImageView) findViewById(R.id.imageView);
         //Setting listeners to button
         buttonMasuk.setOnClickListener(this);
+
 
 
         // Spinner element
@@ -127,6 +130,38 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
         CheckGpsStatus();
 
 
+    }
+
+
+    //PROSES UNTUK MENGAKTIFKAN KAMERA
+    private void ambilFoto() {
+
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+    // PROSES SETEALH AMBIL FOTO
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            bitmap = (Bitmap) data.getExtras().get("data");
+
+            imageView.setImageBitmap(bitmap);
+            status_ambil_foto = true;
+
+            prosesAbsenMasuk();
+        }
+    }
+
+
+    public String getStringImage(Bitmap bmp){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
     }
 
     private void konfirmasiSettingGps(){
@@ -173,8 +208,6 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
 
     private void displayLocation() {
 
-
-
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -207,8 +240,6 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
            String alert =  "(Couldn't get the location. Make sure location is enabled on the device)";
 
             Toast.makeText(this,alert, Toast.LENGTH_LONG).show();
-
-
 
         }
     }
@@ -260,8 +291,6 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
     }
 
 
-
-
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
@@ -301,7 +330,7 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
 
 
 
-        class ProsesAbsenMasuk extends AsyncTask<Void,Void,String>{
+        class ProsesAbsenMasuk extends AsyncTask<Bitmap,Void,String>{
 
             ProgressDialog loading;
 
@@ -316,60 +345,112 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
                 super.onPostExecute(s);
                 loading.dismiss();
                 if (s.equals("1")){
-                    Toast.makeText(getApplicationContext(),
-                            "Berhasil Absen Masuk", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Berhasil Absen Masuk", Toast.LENGTH_LONG).show();
+                    editTextNik.setText("");
+                    editTextNik.setError(null);
+                    editTextPassword.setText("");
+                    editTextNik.requestFocus();
+                    imageView.setImageBitmap(null);
+
                 }
                 else if(s.equals("2")){
 
+                    editTextPassword.setText("");
+                    imageView.setImageBitmap(null);
                     editTextNik.requestFocus();
                     editTextNik.setError( "Anda Sudah Melakukan Absen Masuk!" );
                 }
                 else if(s.equals("0")){
+
+                    imageView.setImageBitmap(null);
+                    editTextPassword.setText("");
                     editTextNik.requestFocus();
                     editTextNik.setError( "Username atau Password yang dimasukkan salah!" );
                 }
 
 
-
             }
 
             @Override
-            protected String doInBackground(Void... v) {
-                HashMap<String,String> params = new HashMap<>();
-                params.put(Config.KEY_NIK,nik);
-                params.put(Config.KEY_PASSWORD,password);
-                params.put(Config.KEY_LOKASI,lokasi);
-                params.put(Config.KEY_LATITUDE,String.valueOf(latitude_saat_ini));
-                params.put(Config.KEY_LONGITUDE,String.valueOf(longitude_saat_ini));
+            protected String doInBackground(Bitmap... params) {
 
+                Bitmap bitmap = params[0];
+                String uploadImage = getStringImage(bitmap);
+
+                HashMap<String,String> data = new HashMap<>();
+
+                data.put(Config.KEY_NIK,nik);
+                data.put(Config.KEY_PASSWORD,password);
+                data.put(Config.KEY_LOKASI,lokasi);
+                data.put(Config.KEY_LATITUDE,String.valueOf(latitude_saat_ini));
+                data.put(Config.KEY_LONGITUDE,String.valueOf(longitude_saat_ini));
+                data.put(Config.KEY_UPLOAD,uploadImage);
 
                 RequestHandler rh = new RequestHandler();
-                String res = rh.sendPostRequest(Config.URL_PROSES_ABSEN_MASUK, params);
+                String res = rh.sendPostRequest(Config.URL_PROSES_ABSEN_MASUK, data);
                 return res;
             }
         }
+
         //untuk mengambil latitude dan longitude terbaru
         CheckGpsStatus();
 
         displayLocation();
 
+
         if (GpsStatus == true){
             if (validasiForm() == true  && (latitude_saat_ini != 0  && latitude_saat_ini != 0  )){
-                ProsesAbsenMasuk pam = new ProsesAbsenMasuk();
-                pam.execute();
+                if (bitmap != null) {
+                    ProsesAbsenMasuk pam = new ProsesAbsenMasuk();
+                    pam.execute(bitmap);
+                }
+
+
             }
         }
 
+    }
+
+    private void uploadImage(){
+        class UploadImage extends AsyncTask<Bitmap,Void,String>{
+
+            ProgressDialog loading;
+            RequestHandler rh = new RequestHandler();
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(AbsenMasuk.this, "Uploading...", null,true,true);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            protected String doInBackground(Bitmap... params) {
+                Bitmap bitmap = params[0];
+                String uploadImage = getStringImage(bitmap);
+
+                HashMap<String,String> data = new HashMap<>();
+
+                data.put(Config.KEY_UPLOAD, uploadImage);
+                String result = rh.sendPostRequest(Config.URL_UPLOAD_FOTO,data);
 
 
+                return result;
+            }
+        }
 
-
-
-
-
+        UploadImage ui = new UploadImage();
+        ui.execute(bitmap);
     }
 
 
+    //untuk menampilkan lokasi di spinner
     private void showLokasi(){
         JSONObject jsonObject = null;
         ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
@@ -500,7 +581,7 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
     public void onClick(View v) {
 
         if (v == buttonMasuk){
-            prosesAbsenMasuk();
+            ambilFoto();
         }
 
     }
