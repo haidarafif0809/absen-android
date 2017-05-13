@@ -46,10 +46,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+
         </activity>
         <activity
             android:name=".AbsenPulang"
-            android:label="Absen Pulang"></activity>
+            android:label="Absen Pulang">
+
+        </activity>
         <activity
             android:name=".User"
             android:label="Tambah User"></activity>
