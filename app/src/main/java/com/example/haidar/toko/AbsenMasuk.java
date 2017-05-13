@@ -39,7 +39,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONArray;
@@ -61,7 +60,7 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
     private  EditText editTextPassword;
     private String JSON_STRING;
     private  Spinner spinnerLokasi;
-    private TextView textLatitude,textLongitude,textJarakLokasiAbsen;
+    private TextView textLatitude,textLongitude,textJarakLokasiAbsen,textBatasJarakAbsen;
 
 
 
@@ -78,12 +77,15 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
     private   List<String> nama_lokasi_absen = new ArrayList<String>();
     private   List<String> latitude_lokasi_absen = new ArrayList<String>();
     private   List<String> longitude_lokasi_absen = new ArrayList<String>();
+    private   List<String> data_batas_jarak_absen = new ArrayList<String>();
 
 
     // Location updates intervals in sec
 
     public static final Integer LOCATION = 0x1;
     public double latitude_saat_ini,longitude_saat_ini,latitude_absen,longitude_absen;
+    public int batas_jarak_absen;
+    public float jarak_ke_lokasi_absen;
 
     //variable untuk kebutuhan upload foto
     private ImageView imageView;
@@ -104,6 +106,7 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
         textLatitude = (TextView) findViewById(R.id.latitude);
         textLongitude = (TextView) findViewById(R.id.longitude);
         textJarakLokasiAbsen = (TextView) findViewById(R.id.jarakKeLokasi);
+        textBatasJarakAbsen = (TextView) findViewById(R.id.textBatasJarakAbsen);
         buttonMasuk = (Button) findViewById(R.id.buttonMasuk);
         imageView = (ImageView) findViewById(R.id.imageView);
         //Setting listeners to button
@@ -297,6 +300,8 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
 
         String latitude =  latitude_lokasi_absen.get(position);
         String longitude =  longitude_lokasi_absen.get(position);
+        String batas_jarak = data_batas_jarak_absen.get(position);
+        batas_jarak_absen = Integer.valueOf(data_batas_jarak_absen.get(position));
 
         Location loc1 = new Location("");
         loc1.setLatitude(latitude_saat_ini);
@@ -306,12 +311,14 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
         loc2.setLatitude(Double.valueOf(latitude));
         loc2.setLongitude(Double.valueOf(longitude));
 
-        float distanceInMeters = loc1.distanceTo(loc2);
+         jarak_ke_lokasi_absen = loc1.distanceTo(loc2);
 
 
-        textJarakLokasiAbsen.setText(String.valueOf(round(distanceInMeters)));
+        textJarakLokasiAbsen.setText(String.valueOf(round(jarak_ke_lokasi_absen)));
+        textBatasJarakAbsen.setText(batas_jarak);
+
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Jarak Ke Lokasi Absen : " + String.valueOf(round(distanceInMeters)) + " m", Toast.LENGTH_LONG).show();
+        Toast.makeText(parent.getContext(), "Jarak Ke Lokasi Absen : " + String.valueOf(round(jarak_ke_lokasi_absen)) + " m", Toast.LENGTH_LONG).show();
     }
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
@@ -399,55 +406,26 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
 
 
         if (GpsStatus == true){
-            if (validasiForm() == true  && (latitude_saat_ini != 0  && latitude_saat_ini != 0  )){
-                if (bitmap != null) {
-                    ProsesAbsenMasuk pam = new ProsesAbsenMasuk();
-                    pam.execute(bitmap);
+
+            if (jarak_ke_lokasi_absen <= batas_jarak_absen){
+                if (validasiForm() == true  && (latitude_saat_ini != 0  && latitude_saat_ini != 0  )){
+                    if (bitmap != null) {
+                        ProsesAbsenMasuk pam = new ProsesAbsenMasuk();
+                        pam.execute(bitmap);
+                    }
+
+
                 }
-
-
             }
+            else {
+                editTextNik.requestFocus();
+                editTextNik.setError( "Lokasi Anda Terlalu Jauh Dari Lokasi Absen!" );
+            }
+
         }
 
     }
 
-    private void uploadImage(){
-        class UploadImage extends AsyncTask<Bitmap,Void,String>{
-
-            ProgressDialog loading;
-            RequestHandler rh = new RequestHandler();
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(AbsenMasuk.this, "Uploading...", null,true,true);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            protected String doInBackground(Bitmap... params) {
-                Bitmap bitmap = params[0];
-                String uploadImage = getStringImage(bitmap);
-
-                HashMap<String,String> data = new HashMap<>();
-
-                data.put(Config.KEY_UPLOAD, uploadImage);
-                String result = rh.sendPostRequest(Config.URL_UPLOAD_FOTO,data);
-
-
-                return result;
-            }
-        }
-
-        UploadImage ui = new UploadImage();
-        ui.execute(bitmap);
-    }
 
 
     //untuk menampilkan lokasi di spinner
@@ -465,6 +443,7 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
                 String nama = jo.getString(Config.TAG_NAMA_LOKASI);
                 String latitude = jo.getString(Config.TAG_LATITUDE);
                 String longitude = jo.getString(Config.TAG_LONGITUDE);
+                String batas_jarak = jo.getString(Config.TAG_BATAS_JARAK);
 
 
 
@@ -472,6 +451,7 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
                 nama_lokasi_absen.add(nama);
                 latitude_lokasi_absen.add(latitude);
                 longitude_lokasi_absen.add(longitude);
+                data_batas_jarak_absen.add(batas_jarak);
 
 
             }
