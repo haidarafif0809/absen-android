@@ -6,27 +6,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".AbsenPulang">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Username / Nik" />
-
     <EditText
         android:hint="Username / Nik"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableLeft="@mipmap/ic_username_black"
         android:id="@+id/editTextNik" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password" />
 
     <EditText
         android:hint="Password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
+        android:drawableLeft="@mipmap/ic_password_black"
 
         android:id="@+id/editTextPassword" />
     <TextView
@@ -41,72 +33,104 @@
         android:prompt="@string/lokasi_absen"
         android:paddingBottom="20dp"/>
 
-
-    <TextView
-
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Latitude Saat ini : " />
+        android:orientation="horizontal">
+        <TextView
 
-    <TextView
-        android:id="@+id/latitude"
-        android:layout_width="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Latitude Saat ini : " />
+
+        <TextView
+            android:id="@+id/latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:orientation="horizontal">
 
+        <TextView
 
-    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Longitude Saat ini : " />
 
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Longitude Saat ini : " />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/longitude"
-        android:layout_width="wrap_content"
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jarak Ke Lokasi Absen (meter) : " />
+
+        <TextView
+            android:id="@+id/jarakKeLokasi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:orientation="horizontal">
+        <TextView
 
-    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Batas Jarak Absen :  " />
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Jarak Ke Lokasi Absen (meter) : " />
+        <TextView
+            android:id="@+id/textBatasJarakAbsen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
-    <TextView
-        android:id="@+id/jarakKeLokasi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <TextView
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Batas Jarak Absen :  " />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textBatasJarakAbsen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ABSEN PULANG"
         android:id="@+id/buttonPulang" />
+
     <TextView
 
         android:layout_width="wrap_content"
         android:textAlignment="center"
         android:layout_height="wrap_content"
-        android:text="Foto Absen Masuk : " />
+        android:text="Foto Absen Pulang : "
+        android:layout_gravity="center"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scaleType="center"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_photo"
         android:id="@+id/imageView" />
+
 
 
 
