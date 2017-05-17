@@ -276,23 +276,25 @@ public class AbsenPulang extends AppCompatActivity implements OnClickListener, A
                 if (s.equals("1")){
                     Toast.makeText(getApplicationContext(),
                             "Berhasil Absen Pulang", Toast.LENGTH_LONG).show();
+
+                    editTextPassword.setText("");
+                    editTextNik.setText("");
+                    editTextNik.requestFocus();
+                    imageView.setImageBitmap(null);
+
+
                 }
                 else if(s.equals("2")){
-
+                    imageView.setImageBitmap(null);
+                    editTextPassword.setText("");
                     editTextNik.requestFocus();
                     editTextNik.setError( "Anda belum melakukan absen masuk atau Sudah Melakukan Absen Pulang!" );
                 }
                 else if(s.equals("0")){
+                    editTextPassword.setText("");
                     editTextNik.requestFocus();
                     editTextNik.setError( "Username atau Password yang dimasukkan salah!" );
                 }
-                Toast.makeText(getApplicationContext(),
-                        s, Toast.LENGTH_LONG).show();
-
-
-
-
-
 
             }
 
