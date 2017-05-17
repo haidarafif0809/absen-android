@@ -141,7 +141,12 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
 
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+
     }
+
+
+
     // PROSES SETEALH AMBIL FOTO
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -200,7 +205,7 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
 
         if(GpsStatus == true)
         {
-            Toast.makeText(this,"Location Services Is Enabled", Toast.LENGTH_LONG).show();
+
         }else {
             konfirmasiSettingGps();
         }
