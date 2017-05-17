@@ -189,6 +189,7 @@ public class ViewLokasiAbsen extends AppCompatActivity implements View.OnClickLi
                     public void onClick(DialogInterface arg0, int arg1) {
                         deleteLokasi();
                         startActivity(new Intent(ViewLokasiAbsen.this,ViewAllLokasi.class));
+                        finish();
                     }
                 });
 
