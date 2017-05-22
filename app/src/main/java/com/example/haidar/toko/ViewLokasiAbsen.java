@@ -8,9 +8,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,7 +30,7 @@ public class ViewLokasiAbsen extends AppCompatActivity implements View.OnClickLi
     private EditText editTextId;
     private EditText editTextLokasi;
     private EditText editTextLatitude;
-    private EditText editTextLongitude;
+    private EditText editTextLongitude,editTextBatasJarak;
 
     private Button buttonUpdate;
     private Button buttonDelete;
@@ -50,6 +50,7 @@ public class ViewLokasiAbsen extends AppCompatActivity implements View.OnClickLi
         editTextLokasi = (EditText) findViewById(R.id.editTextLokasi);
         editTextLatitude = (EditText) findViewById(R.id.editTextLatitude);
         editTextLongitude = (EditText) findViewById(R.id.editTextLongitude);
+        editTextBatasJarak = (EditText) findViewById(R.id.editTextBatasJarak);
 
         buttonUpdate = (Button) findViewById(R.id.buttonUpdate);
         buttonDelete = (Button) findViewById(R.id.buttonDelete);
@@ -99,10 +100,12 @@ public class ViewLokasiAbsen extends AppCompatActivity implements View.OnClickLi
             String lokasi = c.getString(Config.TAG_NAMA_LOKASI);
             String latitude = c.getString(Config.TAG_LATITUDE);
             String longitude = c.getString(Config.TAG_LONGITUDE);
+            String batas_jarak = c.getString(Config.TAG_BATAS_JARAK);
 
             editTextLatitude.setText(latitude);
             editTextLongitude.setText(longitude);
             editTextLokasi.setText(lokasi);
+            editTextBatasJarak.setText(batas_jarak);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -114,6 +117,8 @@ public class ViewLokasiAbsen extends AppCompatActivity implements View.OnClickLi
         final String lokasi = editTextLokasi.getText().toString().trim();
         final String latitude = editTextLatitude.getText().toString().trim();
         final String longitude = editTextLongitude.getText().toString().trim();
+        final String batas_jarak = editTextBatasJarak.getText().toString().trim();
+
 
         class UpdateLokasi extends AsyncTask<Void,Void,String>{
             ProgressDialog loading;
@@ -137,6 +142,7 @@ public class ViewLokasiAbsen extends AppCompatActivity implements View.OnClickLi
                 hashMap.put(Config.KEY_NAMA_LOKASI,lokasi);
                 hashMap.put(Config.KEY_LATITUDE,latitude);
                 hashMap.put(Config.KEY_LONGITUDE,longitude);
+                hashMap.put(Config.KEY_BATAS_JARAK,batas_jarak);
 
                 RequestHandler rh = new RequestHandler();
 
