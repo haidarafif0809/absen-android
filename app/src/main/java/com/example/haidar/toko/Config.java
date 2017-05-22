@@ -13,6 +13,7 @@ public class Config {
     public static final String urlAplikasi = "http://192.168.1.16/absen_android";
     public static final String URL_ADD_LOKASI = urlAplikasi+"/android/tambah_lokasi.php";
     public static final String URL_GET_ALL_LOKASI = urlAplikasi+"/android/data_lokasi.php";
+
     public static final String URL_GET_LOKASI = urlAplikasi+"/android/pilih_lokasi.php?id=";
     public static final String URL_UPDATE_LOKASI = urlAplikasi+"/android/update_lokasi.php";
     public static final String URL_DELETE_LOKASI = urlAplikasi+"/android/hapus_lokasi.php?id=";
@@ -22,6 +23,7 @@ public class Config {
     public static final String URL_PROSES_ABSEN_PULANG = urlAplikasi+"/android/absen_pulang.php";
 
     public static final String URL_ADD_USER = urlAplikasi+"/android/tambah_user.php";
+    public static final String URL_GET_ALL_USER = urlAplikasi+"/android/data_user.php";
     public static final String URL_UPLOAD_FOTO = urlAplikasi+"/android/upload_foto.php";
 
 

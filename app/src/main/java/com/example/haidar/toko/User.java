@@ -68,7 +68,6 @@ public class User  extends AppCompatActivity implements OnClickListener  {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 loading.dismiss();
-                Toast.makeText(User.this,s,Toast.LENGTH_LONG).show();
 
                 if (s.equals("1")){
                     Toast.makeText(User.this,"Berhasil Tambah User",Toast.LENGTH_LONG).show();

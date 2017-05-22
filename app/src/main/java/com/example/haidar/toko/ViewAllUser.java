@@ -39,7 +39,7 @@ public class ViewAllUser extends AppCompatActivity implements ListView.OnItemCli
         getJSON();
     }
 
-    private void showLokasi(){
+    private void showUser(){
         JSONObject jsonObject = null;
         ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
         try {
@@ -66,9 +66,9 @@ public class ViewAllUser extends AppCompatActivity implements ListView.OnItemCli
         }
 
         ListAdapter adapter = new SimpleAdapter(
-                ViewAllUser.this, list, R.layout.list_data_lokasi,
-                new String[]{Config.TAG_LOKASI_ID,Config.TAG_NAMA_LOKASI,Config.TAG_LATITUDE,Config.TAG_LONGITUDE},
-                new int[]{R.id.id,R.id.nama, R.id.latitude,R.id.longitude});
+                ViewAllUser.this, list, R.layout.list_data_user,
+                new String[]{Config.TAG_ID,Config.TAG_NIK,Config.TAG_NAMA},
+                new int[]{R.id.id,R.id.nik, R.id.nama});
 
         listDataUser.setAdapter(adapter);
     }
@@ -88,13 +88,13 @@ public class ViewAllUser extends AppCompatActivity implements ListView.OnItemCli
                 super.onPostExecute(s);
                 loading.dismiss();
                 JSON_STRING = s;
-                showLokasi();
+                showUser();
             }
 
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(Config.URL_GET_ALL_LOKASI);
+                String s = rh.sendGetRequest(Config.URL_GET_ALL_USER);
                 return s;
             }
         }
