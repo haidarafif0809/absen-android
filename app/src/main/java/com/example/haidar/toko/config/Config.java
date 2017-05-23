@@ -26,6 +26,7 @@ public class Config {
     public static final String URL_GET_ALL_USER = urlAplikasi+"/android/data_user.php";
     public static final String URL_UPLOAD_FOTO = urlAplikasi+"/android/upload_foto.php";
     public static final String URL_USER_HADIR = urlAplikasi+"/android/karyawan_hadir.php";
+    public static final String URL_GANTI_PASSWORD = urlAplikasi+"/android/ganti_password.php";
 
 
     //Keys that will be used to send the request to php scripts
@@ -44,6 +45,8 @@ public class Config {
     public static final String KEY_NIK = "nik";
     public static final String KEY_LOKASI = "lokasi";
     public static final String KEY_BATAS_JARAK = "batas_jarak_absen";
+    public static final String KEY_PASSWORD_BARU = "password_baru";
+    public static final String KEY_PASSWORD_LAMA = "password_lama";
 
 
 
@@ -62,6 +65,8 @@ public class Config {
     public static final String TAG_NAMA = "nama";
     public static final String TAG_NIK = "nik";
     public static final String TAG_ID = "id";
+    public static final String TAG_PASSWORD_BARU = "password_baru";
+    public static final String TAG_PASSWORD_LAMA = "password_lama";
 
     //lokasi id to pass with intent
     public static final String LOKASI_ID = "id";
