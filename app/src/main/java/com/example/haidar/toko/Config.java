@@ -10,7 +10,7 @@ public class Config {
 
 
 
-    public static final String urlAplikasi = "http://192.168.1.16/absen_android";
+    public static final String urlAplikasi = "https://aac1945.com/absen_kosasih";
     public static final String URL_ADD_LOKASI = urlAplikasi+"/android/tambah_lokasi.php";
     public static final String URL_GET_ALL_LOKASI = urlAplikasi+"/android/data_lokasi.php";
 
@@ -25,6 +25,7 @@ public class Config {
     public static final String URL_ADD_USER = urlAplikasi+"/android/tambah_user.php";
     public static final String URL_GET_ALL_USER = urlAplikasi+"/android/data_user.php";
     public static final String URL_UPLOAD_FOTO = urlAplikasi+"/android/upload_foto.php";
+    public static final String URL_USER_HADIR = urlAplikasi+"/android/karyawan_hadir.php";
 
 
     //Keys that will be used to send the request to php scripts
@@ -54,6 +55,7 @@ public class Config {
     public static final String TAG_LONGITUDE = "longitude";
     public static final String TAG_NAMA_LOKASI = "nama";
     public static final String TAG_BATAS_JARAK = "batas_jarak_absen";
+    public static final String TAG_WAKTU_MASUK = "waktu_masuk";
 
     public static final String TAG_USERNAME = "username";
     public static final String TAG_PASSWORD = "password";

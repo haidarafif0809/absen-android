@@ -1,6 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+   >
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            >
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/clock"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Haidar Afif Maulana "
+                        android:textSize="24dp"
+                        android:textStyle="bold"
+                        android:id="@+id/nama"/>
+
+
+
+                </LinearLayout> <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NIK : "
+                    android:textSize="20dp"/>
+
+                <TextView
+                    android:id="@+id/nik"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="13123"
+                    android:textSize="20sp"/>
+
+            </LinearLayout> <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/waktu_masuk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="08:00 2017-01-01 "
+                    android:textSize="24sp"
+                    />
+
+
+            </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+
+
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>
