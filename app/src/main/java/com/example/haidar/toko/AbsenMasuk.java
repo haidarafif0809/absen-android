@@ -554,6 +554,10 @@ public class AbsenMasuk  extends AppCompatActivity implements OnClickListener, A
             startActivity( new Intent(this, LoginActivity.class));
 
         }
+        if (item.getItemId() ==  R.id.user_hadir) {
+            startActivity( new Intent(this, UserHadirActivity.class));
+
+        }
 
         return super.onOptionsItemSelected(item);
     }

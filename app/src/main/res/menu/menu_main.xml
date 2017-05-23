@@ -12,10 +12,17 @@
         android:orderInCategory="100"
         android:title="Absen Pulang"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/user_hadir"
+        android:orderInCategory="100"
+        android:title="User Hadir"
+        app:showAsAction="never" />
+
 
     <item
         android:id="@+id/admin"
         android:orderInCategory="100"
         android:title="Admin"
         app:showAsAction="never" />
+
 </menu>

@@ -14,13 +14,11 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -468,6 +466,11 @@ public class AbsenPulang extends AppCompatActivity implements OnClickListener, A
             startActivity( new Intent(this, LoginActivity.class));
 
         }
+        if (item.getItemId() ==  R.id.user_hadir) {
+            startActivity( new Intent(this, UserHadirActivity.class));
+
+        }
+
 
         return super.onOptionsItemSelected(item);
     }

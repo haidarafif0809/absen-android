@@ -129,6 +129,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         return true;
     }
 
+    // membuat menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -150,10 +151,14 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             startActivity( new Intent(this, LoginActivity.class));
 
         }
+        if (item.getItemId() ==  R.id.user_hadir) {
+            startActivity( new Intent(this, UserHadirActivity.class));
+
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
     @Override
