@@ -1,16 +1,23 @@
-package com.example.haidar.toko;
+package com.example.haidar.toko.config;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.example.haidar.toko.front_activity.AbsenMasuk;
+import com.example.haidar.toko.front_activity.AbsenPulang;
+import com.example.haidar.toko.front_activity.GantiPasswordActivity;
+import com.example.haidar.toko.admin_activity.LoginActivity;
+import com.example.haidar.toko.R;
+import com.example.haidar.toko.front_activity.UserHadirActivity;
 
 /**
  * Created by haidar on 23/05/17.
  */
 
-public class BaseActivity  extends Activity {
+public class BaseActivity  extends AppCompatActivity {
 
     // membuat menu
     @Override

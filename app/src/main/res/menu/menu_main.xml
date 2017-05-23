@@ -17,6 +17,11 @@
         android:orderInCategory="100"
         android:title="User Hadir"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_ganti_password"
+        android:orderInCategory="100"
+        android:title="Ganti Password"
+        app:showAsAction="never" />
 
 
     <item

@@ -1,4 +1,4 @@
-package com.example.haidar.toko;
+package com.example.haidar.toko.admin_activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import com.example.haidar.toko.front_activity.AbsenMasuk;
+import com.example.haidar.toko.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

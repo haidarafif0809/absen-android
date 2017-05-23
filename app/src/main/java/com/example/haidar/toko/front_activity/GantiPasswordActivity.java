@@ -1,27 +1,24 @@
-package com.example.haidar.toko;
+package com.example.haidar.toko.front_activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.haidar.toko.R;
+import com.example.haidar.toko.config.BaseActivity;
+import com.example.haidar.toko.config.Config;
+import com.example.haidar.toko.config.RequestHandler;
+
 import java.util.HashMap;
 
-import static com.example.haidar.toko.R.id.editTextBatasJarak;
-import static com.example.haidar.toko.R.id.editTextLatitude;
-import static com.example.haidar.toko.R.id.editTextLongitude;
-import static com.example.haidar.toko.R.id.editTextNama;
 import static com.example.haidar.toko.R.id.editTextNik;
 
-public class GantiPasswordActivity extends AppCompatActivity  implements View.OnClickListener, {
+public class GantiPasswordActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText edtPasswordLama,edtPasswordBaru,edtNik;
     private Button btnGantiPassword;
@@ -59,13 +56,29 @@ public class GantiPasswordActivity extends AppCompatActivity  implements View.On
             protected void onPreExecute() {
                 super.onPreExecute();
                 loading = ProgressDialog.show(GantiPasswordActivity.this, "Processing...", "Wait...", false, false);
+                loading.setCancelable(false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 loading.dismiss();
-                Toast.makeText(GantiPasswordActivity.this, s, Toast.LENGTH_LONG).show();
+
+
+                if (s.equals("2")){
+                    edtNik.setText("");
+                    edtPasswordBaru.setText("");
+                    edtPasswordLama.setText("");
+                    edtNik.requestFocus();
+                    edtNik.setError("Nik Atau Password Salah!");
+                }
+                else if (s.equals("1")){
+                    Toast.makeText(GantiPasswordActivity.this, "Berhasil Mengganti Password", Toast.LENGTH_LONG).show();
+                    //pindah ke absen masuk
+                    startActivity(new Intent(GantiPasswordActivity.this,AbsenMasuk.class));
+
+                }
+
             }
 
             @Override
@@ -129,6 +142,10 @@ public class GantiPasswordActivity extends AppCompatActivity  implements View.On
 
     @Override
     public void onClick(View v) {
+
+        if (v == btnGantiPassword){
+            prosesGantiPassword();
+        }
 
     }
 }

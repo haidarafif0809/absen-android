@@ -1,4 +1,4 @@
-package com.example.haidar.toko;
+package com.example.haidar.toko.admin_activity;
 
 /**
  * Created by haidar on 11/05/17.
@@ -14,6 +14,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.haidar.toko.R;
+import com.example.haidar.toko.config.RequestHandler;
+import com.example.haidar.toko.config.Config;
 
 import java.util.HashMap;
 

@@ -1,7 +1,9 @@
-package com.example.haidar.toko;
+package com.example.haidar.toko.admin_activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.haidar.toko.R;
 
 public class ViewUserActivity extends AppCompatActivity {
 

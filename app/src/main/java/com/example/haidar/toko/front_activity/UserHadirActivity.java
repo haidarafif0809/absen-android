@@ -1,16 +1,16 @@
-package com.example.haidar.toko;
+package com.example.haidar.toko.front_activity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
+import com.example.haidar.toko.R;
+import com.example.haidar.toko.config.BaseActivity;
+import com.example.haidar.toko.config.Config;
+import com.example.haidar.toko.config.RequestHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class UserHadirActivity extends AppCompatActivity {
+public class UserHadirActivity extends BaseActivity {
 
     private ListView listDataHadir;
 
@@ -100,36 +100,6 @@ public class UserHadirActivity extends AppCompatActivity {
         }
         GetJSON gj = new GetJSON();
         gj.execute();
-    }
-    // membuat menu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu); //your file name
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-
-        if (item.getItemId() ==  R.id.absen_masuk) {
-            startActivity( new Intent(this, AbsenMasuk.class));
-        }
-        if (item.getItemId() ==  R.id.absen_pulang) {
-            startActivity( new Intent(this, AbsenPulang.class));
-
-        }
-        if (item.getItemId() ==  R.id.admin) {
-            startActivity( new Intent(this, LoginActivity.class));
-
-        }
-        if (item.getItemId() ==  R.id.user_hadir) {
-            startActivity( new Intent(this, UserHadirActivity.class));
-
-        }
-
-
-        return super.onOptionsItemSelected(item);
     }
 
 

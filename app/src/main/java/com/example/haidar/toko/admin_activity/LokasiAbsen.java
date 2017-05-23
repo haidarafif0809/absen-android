@@ -1,4 +1,4 @@
-package com.example.haidar.toko;
+package com.example.haidar.toko.admin_activity;
 
 /**
  * Created by haidar on 28/04/17.
@@ -20,6 +20,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.haidar.toko.R;
+import com.example.haidar.toko.config.RequestHandler;
+import com.example.haidar.toko.config.Config;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
