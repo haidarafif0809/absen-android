@@ -40,6 +40,7 @@ import com.example.haidar.toko.config.RequestHandler;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONArray;
@@ -54,7 +55,7 @@ import java.util.List;
 import static java.lang.Math.round;
 
 
-public class AbsenMasuk  extends BaseActivity implements OnClickListener, AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class PresensiMasuk extends BaseActivity implements OnClickListener, AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener {
 
     private Button buttonMasuk;
     private EditText editTextNik;
@@ -62,6 +63,8 @@ public class AbsenMasuk  extends BaseActivity implements OnClickListener, Adapte
     private String JSON_STRING;
     private  Spinner spinnerLokasi;
     private TextView textLatitude,textLongitude,textJarakLokasiAbsen,textBatasJarakAbsen;
+
+    public boolean mLocationRequest;
 
 
 
@@ -253,6 +256,24 @@ public class AbsenMasuk  extends BaseActivity implements OnClickListener, Adapte
         }
     }
 
+    /**
+     * Starting the location updates
+     * */
+    protected void startLocationUpdates() {
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient,true, this);
+
+    }
+
+    /**
+     * Stopping location updates
+     */
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                mGoogleApiClient, this);
+    }
+
 
 
     protected void onStart() {
@@ -350,7 +371,7 @@ public class AbsenMasuk  extends BaseActivity implements OnClickListener, Adapte
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(AbsenMasuk.this,"Processing...","Wait...",false,false);
+                loading = ProgressDialog.show(PresensiMasuk.this,"Processing...","Wait...",false,false);
             }
 
             @Override
@@ -486,7 +507,7 @@ public class AbsenMasuk  extends BaseActivity implements OnClickListener, Adapte
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(AbsenMasuk.this,"Fetching Data","Wait...",false,false);
+                loading = ProgressDialog.show(PresensiMasuk.this,"Fetching Data","Wait...",false,false);
             }
 
             @Override
@@ -556,5 +577,10 @@ public class AbsenMasuk  extends BaseActivity implements OnClickListener, Adapte
     @Override
     public void onConnectionSuspended(int i) {
         mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
     }
 }

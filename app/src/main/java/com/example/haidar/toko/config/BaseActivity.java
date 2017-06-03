@@ -6,8 +6,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.example.haidar.toko.front_activity.AbsenMasuk;
-import com.example.haidar.toko.front_activity.AbsenPulang;
+import com.example.haidar.toko.front_activity.PresensiMasuk;
+import com.example.haidar.toko.front_activity.PresensiPulang;
 import com.example.haidar.toko.front_activity.GantiPasswordActivity;
 import com.example.haidar.toko.admin_activity.LoginActivity;
 import com.example.haidar.toko.R;
@@ -31,10 +31,10 @@ public class BaseActivity  extends AppCompatActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
 
         if (item.getItemId() ==  R.id.absen_masuk) {
-            startActivity( new Intent(this, AbsenMasuk.class));
+            startActivity( new Intent(this, PresensiMasuk.class));
         }
         if (item.getItemId() ==  R.id.absen_pulang) {
-            startActivity( new Intent(this, AbsenPulang.class));
+            startActivity( new Intent(this, PresensiPulang.class));
 
         }
         if (item.getItemId() ==  R.id.admin) {

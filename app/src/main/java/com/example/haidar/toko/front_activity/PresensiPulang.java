@@ -53,7 +53,7 @@ import java.util.List;
 import static java.lang.Math.round;
 
 
-public class AbsenPulang extends BaseActivity implements OnClickListener, AdapterView.OnItemSelectedListener,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class PresensiPulang extends BaseActivity implements OnClickListener, AdapterView.OnItemSelectedListener,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     private Button buttonPulang;
     private EditText editTextNik;
@@ -265,7 +265,7 @@ public class AbsenPulang extends BaseActivity implements OnClickListener, Adapte
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(AbsenPulang.this,"Processing...","Wait...",false,false);
+                loading = ProgressDialog.show(PresensiPulang.this,"Processing...","Wait...",false,false);
             }
 
             @Override
@@ -400,7 +400,7 @@ public class AbsenPulang extends BaseActivity implements OnClickListener, Adapte
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(AbsenPulang.this,"Fetching Data","Wait...",false,false);
+                loading = ProgressDialog.show(PresensiPulang.this,"Fetching Data","Wait...",false,false);
             }
 
             @Override

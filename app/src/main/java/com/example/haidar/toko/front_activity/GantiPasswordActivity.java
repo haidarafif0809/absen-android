@@ -75,7 +75,7 @@ public class GantiPasswordActivity extends BaseActivity implements View.OnClickL
                 else if (s.equals("1")){
                     Toast.makeText(GantiPasswordActivity.this, "Berhasil Mengganti Password", Toast.LENGTH_LONG).show();
                     //pindah ke absen masuk
-                    startActivity(new Intent(GantiPasswordActivity.this,AbsenMasuk.class));
+                    startActivity(new Intent(GantiPasswordActivity.this,PresensiMasuk.class));
 
                 }
 
@@ -125,7 +125,8 @@ public class GantiPasswordActivity extends BaseActivity implements View.OnClickL
 
 
             return false;
-        }   else  if( edtPasswordLama.getText().toString().trim().equals(edtPasswordBaru.getText().toString().trim()))
+        }
+        else  if( edtPasswordLama.getText().toString().trim().equals(edtPasswordBaru.getText().toString().trim()))
         {
             edtPasswordLama.setError( "Password baru tidak boleh sama dengan yang lama !" );
 

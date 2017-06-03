@@ -18,8 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.haidar.toko.front_activity.AbsenMasuk;
-import com.example.haidar.toko.front_activity.AbsenPulang;
+import com.example.haidar.toko.front_activity.PresensiMasuk;
+import com.example.haidar.toko.front_activity.PresensiPulang;
 import com.example.haidar.toko.R;
 import com.example.haidar.toko.front_activity.UserHadirActivity;
 import com.example.haidar.toko.config.Config;
@@ -148,10 +148,10 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     public boolean onOptionsItemSelected(final MenuItem item) {
 
         if (item.getItemId() ==  R.id.absen_masuk) {
-            startActivity( new Intent(this, AbsenMasuk.class));
+            startActivity( new Intent(this, PresensiMasuk.class));
         }
         if (item.getItemId() ==  R.id.absen_pulang) {
-            startActivity( new Intent(this, AbsenPulang.class));
+            startActivity( new Intent(this, PresensiPulang.class));
 
         }
         if (item.getItemId() ==  R.id.admin) {
