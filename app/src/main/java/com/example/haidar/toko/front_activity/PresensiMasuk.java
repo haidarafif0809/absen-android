@@ -5,6 +5,7 @@ package com.example.haidar.toko.front_activity;
  */
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -41,6 +43,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONArray;
@@ -64,12 +67,21 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
     private  Spinner spinnerLokasi;
     private TextView textLatitude,textLongitude,textJarakLokasiAbsen,textBatasJarakAbsen;
 
-    public boolean mLocationRequest;
+    // boolean flag to toggle periodic location updates
+    private boolean mRequestingLocationUpdates = true;
+    private LocationRequest mLocationRequest;
 
-
+    // Location updates intervals in sec
+    private static int UPDATE_INTERVAL = 2000; // 10 sec
+    private static int FATEST_INTERVAL = 1000; // 5 sec
+    private static int DISPLACEMENT = 10; // 10 meters
 
     // LogCat tag
     private static final String TAG = MainActivity.class.getSimpleName();
+
+
+
+
 
    //variable untuk kebutuhan lokasi
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
@@ -97,6 +109,8 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
     private static final int CAMERA_REQUEST = 1888;
     private boolean status_ambil_foto;
 
+    private FloatingActionButton fabMyLocation;
+
 
 
     @Override
@@ -113,8 +127,11 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
         textBatasJarakAbsen = (TextView) findViewById(R.id.textBatasJarakAbsen);
         buttonMasuk = (Button) findViewById(R.id.buttonMasuk);
         imageView = (ImageView) findViewById(R.id.imageView);
+        fabMyLocation = (FloatingActionButton) findViewById(R.id.fabMyLocation);
         //Setting listeners to button
         buttonMasuk.setOnClickListener(this);
+
+        fabMyLocation.setOnClickListener(this);
 
 
 
@@ -256,25 +273,6 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
         }
     }
 
-    /**
-     * Starting the location updates
-     * */
-    protected void startLocationUpdates() {
-
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient,true, this);
-
-    }
-
-    /**
-     * Stopping location updates
-     */
-    protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(
-                mGoogleApiClient, this);
-    }
-
-
 
     protected void onStart() {
         super.onStart();
@@ -288,8 +286,64 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
         super.onResume();
 
         checkPlayServices();
+
+        // Resuming the periodic location updates
+        if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
+
     }
 
+    /**
+     * Method to toggle periodic location updates
+     * */
+    private void togglePeriodicLocationUpdates() {
+
+            mRequestingLocationUpdates = true;
+
+            startLocationUpdates();
+
+    }
+    /**
+     * Creating location request object
+     * */
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FATEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setSmallestDisplacement(DISPLACEMENT); // 10 meters
+
+    }
+
+    /**
+     * Starting the location updates
+     * */
+    protected void startLocationUpdates() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        createLocationRequest();
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+
+    }
+
+    /**
+     * Stopping location updates
+     */
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                mGoogleApiClient, this);
+    }
     /**
      * Creating google api client object
      * */
@@ -560,6 +614,11 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
             ambilFoto();
         }
 
+        if (v == fabMyLocation){
+
+            startLocationUpdates();
+        }
+
     }
 
     @Override
@@ -572,6 +631,10 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
     public void onConnected(Bundle connectionHint) {
 
         displayLocation();
+
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
     }
 
     @Override
@@ -582,5 +645,13 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
     @Override
     public void onLocationChanged(Location location) {
 
+        // Assign the new location
+        mLastLocation = location;
+
+        Toast.makeText(getApplicationContext(), "Lokasi Berubah!",
+                Toast.LENGTH_SHORT).show();
+
+        // Displaying the new location on UI
+        displayLocation();
     }
 }
