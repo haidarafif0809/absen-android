@@ -417,6 +417,8 @@ public class PresensiPulang extends BaseActivity implements OnClickListener, Ada
             protected void onPreExecute() {
                 super.onPreExecute();
                 loading = ProgressDialog.show(PresensiPulang.this,"Fetching Data","Wait...",false,false);
+                loading.setCancelable(false);
+
             }
 
             @Override

@@ -562,6 +562,7 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
             protected void onPreExecute() {
                 super.onPreExecute();
                 loading = ProgressDialog.show(PresensiMasuk.this,"Fetching Data","Wait...",false,false);
+                loading.setCancelable(false);
             }
 
             @Override
