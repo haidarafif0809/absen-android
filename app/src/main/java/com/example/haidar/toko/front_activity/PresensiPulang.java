@@ -73,8 +73,8 @@ public class PresensiPulang extends BaseActivity implements OnClickListener, Ada
     private LocationRequest mLocationRequest;
 
     // Location updates intervals in sec
-    private static int UPDATE_INTERVAL = 2000; // 10 sec
-    private static int FATEST_INTERVAL = 1000; // 5 sec
+    private static int UPDATE_INTERVAL = 5000; // 10 sec
+    private static int FATEST_INTERVAL = 2000; // 5 sec
     private static int DISPLACEMENT = 10; // 10 meters
 
     private FloatingActionButton fabMyLocation;
@@ -625,7 +625,7 @@ public class PresensiPulang extends BaseActivity implements OnClickListener, Ada
         // Assign the new location
         mLastLocation = location;
 
-        Toast.makeText(getApplicationContext(), "Lokasi Berubah!",
+        Toast.makeText(getApplicationContext(), "Lokasi Diperbarui",
                 Toast.LENGTH_SHORT).show();
 
         // Displaying the new location on UI
