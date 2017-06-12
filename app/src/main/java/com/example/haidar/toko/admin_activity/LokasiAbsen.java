@@ -4,15 +4,16 @@ package com.example.haidar.toko.admin_activity;
  * Created by haidar on 28/04/17.
  */
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,18 +22,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.haidar.toko.R;
-import com.example.haidar.toko.config.RequestHandler;
 import com.example.haidar.toko.config.Config;
+import com.example.haidar.toko.config.RequestHandler;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.HashMap;
 
-public class LokasiAbsen extends AppCompatActivity implements OnClickListener, OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class LokasiAbsen extends AppCompatActivity implements OnClickListener, OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener {
 
     //Defining views
     private EditText editTextNama;
@@ -41,6 +43,16 @@ public class LokasiAbsen extends AppCompatActivity implements OnClickListener, O
     private EditText editTextBatasJarak;
 
     private Button buttonAdd,buttonView,buttonGetLoc;
+
+    // boolean flag to toggle periodic location updates
+    private boolean mRequestingLocationUpdates = true;
+    private LocationRequest mLocationRequest;
+
+    // Location updates intervals in sec
+    private static int UPDATE_INTERVAL = 5000; // 10 sec
+    private static int FATEST_INTERVAL = 2000; // 5 sec
+    private static int DISPLACEMENT = 10; // 10 meters
+
 
 
     // LogCat tag
@@ -173,6 +185,10 @@ public class LokasiAbsen extends AppCompatActivity implements OnClickListener, O
         super.onResume();
 
         checkPlayServices();
+        // Resuming the periodic location updates
+        if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
     }
 
 
@@ -260,6 +276,40 @@ public class LokasiAbsen extends AppCompatActivity implements OnClickListener, O
         return true;
     }
 
+    /**
+     * Creating location request object
+     * */
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FATEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setSmallestDisplacement(DISPLACEMENT); // 10 meters
+
+    }
+
+    /**
+     * Starting the location updates
+     * */
+    protected void startLocationUpdates() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        createLocationRequest();
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+
+    }
+
+
 
     @Override
     public void onClick(View v) {
@@ -287,12 +337,32 @@ public class LokasiAbsen extends AppCompatActivity implements OnClickListener, O
     public void onConnected(Bundle connectionHint) {
 
         displayLocation();
+
+
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
     }
 
     @Override
     public void onConnectionSuspended(int i) {
+
         mGoogleApiClient.connect();
     }
 
 
+    @Override
+    public void onLocationChanged(Location location) {
+
+
+        // Assign the new location
+        mLastLocation = location;
+
+        Toast.makeText(getApplicationContext(), "Lokasi Diperbarui",
+                Toast.LENGTH_SHORT).show();
+
+        // Displaying the new location on UI
+        displayLocation();
+
+    }
 }
