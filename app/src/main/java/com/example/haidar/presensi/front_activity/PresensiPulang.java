@@ -251,6 +251,28 @@ public class PresensiPulang extends BaseActivity implements OnClickListener, Ada
             textLatitude.setText(String.valueOf(latitude_saat_ini));
             textLongitude.setText(String.valueOf(longitude_saat_ini));
 
+            //mengambil data latitude ,longitude dan batas jarak absen dari lokasi yang di pilih
+            Integer position = spinnerLokasi.getSelectedItemPosition();
+            String latitude =  latitude_lokasi_absen.get(position);
+            String longitude =  longitude_lokasi_absen.get(position);
+            String batas_jarak = data_batas_jarak_absen.get(position);
+            batas_jarak_absen = Integer.valueOf(data_batas_jarak_absen.get(position));
+
+            // menghitung jarak dari lokasi user ke lokasi absen
+            Location loc1 = new Location("");
+            loc1.setLatitude(latitude_saat_ini);
+            loc1.setLongitude(longitude_saat_ini);
+
+            Location loc2 = new Location("");
+            loc2.setLatitude(Double.valueOf(latitude));
+            loc2.setLongitude(Double.valueOf(longitude));
+
+            jarak_ke_lokasi_absen = loc1.distanceTo(loc2);
+
+
+            textJarakLokasiAbsen.setText(String.valueOf(round(jarak_ke_lokasi_absen)));
+            textBatasJarakAbsen.setText(batas_jarak);
+
         } else {
 
             String alert =  "(Couldn't get the location. Make sure location is enabled on the device)";

@@ -10,7 +10,7 @@ public class Config {
 
 
 
-    public static final String urlAplikasi = "http://192.168.1.16/absen_android";
+    public static final String urlAplikasi = "https://aac1945.com/absen_kosasih";
     public static final String URL_ADD_LOKASI = urlAplikasi+"/android/tambah_lokasi.php";
     public static final String URL_GET_ALL_LOKASI = urlAplikasi+"/android/data_lokasi.php";
 

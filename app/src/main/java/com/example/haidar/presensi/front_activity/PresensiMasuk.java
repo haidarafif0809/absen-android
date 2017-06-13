@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.haidar.toko.R.id.latitude;
 import static java.lang.Math.round;
 
 
@@ -121,7 +122,7 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
         //Initializing views
         editTextNik = (EditText) findViewById(R.id.editTextNik);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        textLatitude = (TextView) findViewById(R.id.latitude);
+        textLatitude = (TextView) findViewById(latitude);
         textLongitude = (TextView) findViewById(R.id.longitude);
         textJarakLokasiAbsen = (TextView) findViewById(R.id.jarakKeLokasi);
         textBatasJarakAbsen = (TextView) findViewById(R.id.textBatasJarakAbsen);
@@ -263,6 +264,8 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
 
             textLatitude.setText(String.valueOf(latitude_saat_ini));
             textLongitude.setText(String.valueOf(longitude_saat_ini));
+
+
 
         } else {
 
@@ -654,5 +657,25 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
 
         // Displaying the new location on UI
         displayLocation();
+
+
+        //mengambil data latitude ,longitude dan batas jarak absen dari lokasi yang di pilih
+        Integer position = spinnerLokasi.getSelectedItemPosition();
+        String latitude =  latitude_lokasi_absen.get(position);
+        String longitude =  longitude_lokasi_absen.get(position);
+        String batas_jarak = data_batas_jarak_absen.get(position);
+        batas_jarak_absen = Integer.valueOf(data_batas_jarak_absen.get(position));
+
+        // menghitung jarak dari lokasi user ke lokasi absen
+        Location loc1 = new Location("");
+        loc1.setLatitude(latitude_saat_ini);
+        loc1.setLongitude(longitude_saat_ini);
+        Location loc2 = new Location("");
+        loc2.setLatitude(Double.valueOf(latitude));
+        loc2.setLongitude(Double.valueOf(longitude));
+        jarak_ke_lokasi_absen = loc1.distanceTo(loc2);
+        textJarakLokasiAbsen.setText(String.valueOf(round(jarak_ke_lokasi_absen)));
+        textBatasJarakAbsen.setText(batas_jarak);
+
     }
 }
