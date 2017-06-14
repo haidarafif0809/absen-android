@@ -26,6 +26,22 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <activity
+            android:name="com.example.haidar.presensi.front_activity.PresensiMasuk"
+            android:label="@string/presensi_masuk">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+        </activity>
+        <activity
+            android:name="com.example.haidar.presensi.front_activity.PresensiPulang"
+            android:label="@string/presensi_pulang" />
+
 
         <activity
             android:name="com.example.haidar.presensi.admin_activity.MainActivity"
@@ -49,21 +65,7 @@
             android:name="com.example.haidar.presensi.admin_activity.ViewLokasiAbsen"
             android:label="Ubah Lokasi Absen"
             android:noHistory="true" />
-        <activity
-            android:name="com.example.haidar.presensi.front_activity.PresensiMasuk"
-            android:label="Presensi Masuk">
 
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
-
-
-        </activity>
-        <activity
-            android:name="com.example.haidar.presensi.front_activity.PresensiPulang"
-            android:label="Presensi Pulang" />
         <activity
             android:name="com.example.haidar.presensi.admin_activity.User"
             android:label="Tambah User" />
