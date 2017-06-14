@@ -1,4 +1,4 @@
-package com.example.haidar.toko.front_activity;
+package com.example.haidar.presensi.front_activity;
 
 /**
  * Created by haidar on 10/05/17.
@@ -33,11 +33,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.haidar.toko.R;
-import com.example.haidar.toko.admin_activity.MainActivity;
-import com.example.haidar.toko.config.BaseActivity;
-import com.example.haidar.toko.config.Config;
-import com.example.haidar.toko.config.RequestHandler;
+import com.example.haidar.presensi.R;
+import com.example.haidar.presensi.admin_activity.MainActivity;
+import com.example.haidar.presensi.config.BaseActivity;
+import com.example.haidar.presensi.config.Config;
+import com.example.haidar.presensi.config.RequestHandler;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -55,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static java.lang.Math.round;
+import static java.sql.Types.NULL;
 
 
 public class PresensiPulang extends BaseActivity implements OnClickListener, AdapterView.OnItemSelectedListener,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener {
@@ -251,27 +252,9 @@ public class PresensiPulang extends BaseActivity implements OnClickListener, Ada
             textLatitude.setText(String.valueOf(latitude_saat_ini));
             textLongitude.setText(String.valueOf(longitude_saat_ini));
 
-            //mengambil data latitude ,longitude dan batas jarak absen dari lokasi yang di pilih
-            Integer position = spinnerLokasi.getSelectedItemPosition();
-            String latitude =  latitude_lokasi_absen.get(position);
-            String longitude =  longitude_lokasi_absen.get(position);
-            String batas_jarak = data_batas_jarak_absen.get(position);
-            batas_jarak_absen = Integer.valueOf(data_batas_jarak_absen.get(position));
-
-            // menghitung jarak dari lokasi user ke lokasi absen
-            Location loc1 = new Location("");
-            loc1.setLatitude(latitude_saat_ini);
-            loc1.setLongitude(longitude_saat_ini);
-
-            Location loc2 = new Location("");
-            loc2.setLatitude(Double.valueOf(latitude));
-            loc2.setLongitude(Double.valueOf(longitude));
-
-            jarak_ke_lokasi_absen = loc1.distanceTo(loc2);
-
-
-            textJarakLokasiAbsen.setText(String.valueOf(round(jarak_ke_lokasi_absen)));
-            textBatasJarakAbsen.setText(batas_jarak);
+            if (batas_jarak_absen != NULL){
+                update_jarak_absen();
+            }
 
         } else {
 
@@ -503,30 +486,9 @@ public class PresensiPulang extends BaseActivity implements OnClickListener, Ada
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
 
-        String latitude =  latitude_lokasi_absen.get(position);
-        String longitude =  longitude_lokasi_absen.get(position);
-        String batas_jarak = data_batas_jarak_absen.get(position);
-        batas_jarak_absen = Integer.valueOf(data_batas_jarak_absen.get(position));
+        update_jarak_absen();
 
-        Location loc1 = new Location("");
-        loc1.setLatitude(latitude_saat_ini);
-        loc1.setLongitude(longitude_saat_ini);
-
-        Location loc2 = new Location("");
-        loc2.setLatitude(Double.valueOf(latitude));
-        loc2.setLongitude(Double.valueOf(longitude));
-
-        jarak_ke_lokasi_absen = loc1.distanceTo(loc2);
-
-
-        textJarakLokasiAbsen.setText(String.valueOf(round(jarak_ke_lokasi_absen)));
-        textBatasJarakAbsen.setText(batas_jarak);
-
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Jarak Ke Lokasi Absen : " + String.valueOf(round(jarak_ke_lokasi_absen)) + " m", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -602,6 +564,13 @@ public class PresensiPulang extends BaseActivity implements OnClickListener, Ada
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        stopLocationUpdates();
+    }
+
     /**
      * Creating location request object
      * */
@@ -654,5 +623,36 @@ public class PresensiPulang extends BaseActivity implements OnClickListener, Ada
 
         // Displaying the new location on UI
         displayLocation();
+
+
+
+
+    }
+
+
+    private void update_jarak_absen(){
+
+        Integer position = spinnerLokasi.getSelectedItemPosition();
+        String latitude =  latitude_lokasi_absen.get(position);
+        String longitude =  longitude_lokasi_absen.get(position);
+        String batas_jarak = data_batas_jarak_absen.get(position);
+        batas_jarak_absen = Integer.valueOf(data_batas_jarak_absen.get(position));
+        Location loc1 = new Location("");
+        loc1.setLatitude(latitude_saat_ini);
+        loc1.setLongitude(longitude_saat_ini);
+
+        Location loc2 = new Location("");
+        loc2.setLatitude(Double.valueOf(latitude));
+        loc2.setLongitude(Double.valueOf(longitude));
+
+        jarak_ke_lokasi_absen = loc1.distanceTo(loc2);
+
+
+        textJarakLokasiAbsen.setText(String.valueOf(round(jarak_ke_lokasi_absen)));
+        textBatasJarakAbsen.setText(batas_jarak);
+
+        // Showing selected spinner item
+        Toast.makeText(PresensiPulang.this, "Jarak Ke Lokasi Absen : " + String.valueOf(round(jarak_ke_lokasi_absen)) + " m", Toast.LENGTH_LONG).show();
+
     }
 }
