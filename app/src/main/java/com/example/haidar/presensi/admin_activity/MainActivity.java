@@ -1,4 +1,4 @@
-package com.example.haidar.toko.admin_activity;
+package com.example.haidar.presensi.admin_activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.haidar.toko.front_activity.PresensiMasuk;
-import com.example.haidar.toko.R;
+import com.example.haidar.presensi.front_activity.PresensiMasuk;
+import com.example.haidar.presensi.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

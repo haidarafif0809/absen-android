@@ -1,4 +1,4 @@
-package com.example.haidar.toko.front_activity;
+package com.example.haidar.presensi.front_activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,14 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.haidar.toko.R;
-import com.example.haidar.toko.config.BaseActivity;
-import com.example.haidar.toko.config.Config;
-import com.example.haidar.toko.config.RequestHandler;
+import com.example.haidar.presensi.R;
+import com.example.haidar.presensi.config.BaseActivity;
+import com.example.haidar.presensi.config.Config;
+import com.example.haidar.presensi.config.RequestHandler;
 
 import java.util.HashMap;
 
-import static com.example.haidar.toko.R.id.editTextNik;
+import static com.example.haidar.presensi.R.id.editTextNik;
 
 public class GantiPasswordActivity extends BaseActivity implements View.OnClickListener {
 

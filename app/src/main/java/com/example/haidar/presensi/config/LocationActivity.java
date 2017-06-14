@@ -1,4 +1,4 @@
-package com.example.haidar.toko.config;
+package com.example.haidar.presensi.config;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.haidar.toko.R;
-import com.example.haidar.toko.admin_activity.MainActivity;
+import com.example.haidar.presensi.R;
+import com.example.haidar.presensi.admin_activity.MainActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;

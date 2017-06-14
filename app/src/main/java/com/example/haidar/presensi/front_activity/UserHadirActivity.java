@@ -1,4 +1,4 @@
-package com.example.haidar.toko.front_activity;
+package com.example.haidar.presensi.front_activity;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -7,10 +7,10 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.example.haidar.toko.R;
-import com.example.haidar.toko.config.BaseActivity;
-import com.example.haidar.toko.config.Config;
-import com.example.haidar.toko.config.RequestHandler;
+import com.example.haidar.presensi.R;
+import com.example.haidar.presensi.config.BaseActivity;
+import com.example.haidar.presensi.config.Config;
+import com.example.haidar.presensi.config.RequestHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;

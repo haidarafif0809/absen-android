@@ -1,4 +1,4 @@
-package com.example.haidar.toko.config;
+package com.example.haidar.presensi.config;
 
 /**
  * Created by haidar on 08/04/17.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.haidar.toko">
+    package="com.example.haidar.presensi">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -28,29 +28,29 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".admin_activity.MainActivity"
+            android:name="com.example.haidar.presensi.admin_activity.MainActivity"
             android:label="Admin"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".admin_activity.LokasiAbsen"
+            android:name="com.example.haidar.presensi.admin_activity.LokasiAbsen"
             android:label="Tambah Lokasi Absen">
             0.
         </activity>
         <activity
-            android:name=".admin_activity.LoginActivity"
+            android:name="com.example.haidar.presensi.admin_activity.LoginActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".admin_activity.ViewAllLokasi"
+            android:name="com.example.haidar.presensi.admin_activity.ViewAllLokasi"
             android:label="Data Lokasi Absen" />
         <activity
-            android:name=".admin_activity.ViewAllUser"
+            android:name="com.example.haidar.presensi.admin_activity.ViewAllUser"
             android:label="Data User" />
         <activity
-            android:name=".admin_activity.ViewLokasiAbsen"
+            android:name="com.example.haidar.presensi.admin_activity.ViewLokasiAbsen"
             android:label="Ubah Lokasi Absen"
             android:noHistory="true" />
         <activity
-            android:name=".front_activity.PresensiMasuk"
+            android:name="com.example.haidar.presensi.front_activity.PresensiMasuk"
             android:label="Presensi Masuk">
 
             <intent-filter>
@@ -62,21 +62,21 @@
 
         </activity>
         <activity
-            android:name=".front_activity.PresensiPulang"
+            android:name="com.example.haidar.presensi.front_activity.PresensiPulang"
             android:label="Presensi Pulang" />
         <activity
-            android:name=".admin_activity.User"
+            android:name="com.example.haidar.presensi.admin_activity.User"
             android:label="Tambah User" />
         <activity
-            android:name=".front_activity.UserHadirActivity"
+            android:name="com.example.haidar.presensi.front_activity.UserHadirActivity"
             android:label="User Hadir"
             android:noHistory="true" />
-        <activity android:name=".admin_activity.ViewUserActivity" />
+        <activity android:name="com.example.haidar.presensi.admin_activity.ViewUserActivity" />
         <activity
-            android:name=".front_activity.GantiPasswordActivity"
+            android:name="com.example.haidar.presensi.front_activity.GantiPasswordActivity"
             android:label="Ganti Password"
             android:noHistory="true"></activity>
-        <activity android:name=".config.LocationActivity">
+        <activity android:name="com.example.haidar.presensi.config.LocationActivity">
 
         </activity>
     </application>

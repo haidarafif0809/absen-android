@@ -1,4 +1,4 @@
-package com.example.haidar.toko.config;
+package com.example.haidar.presensi.config;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,12 +6,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.example.haidar.toko.front_activity.PresensiMasuk;
-import com.example.haidar.toko.front_activity.PresensiPulang;
-import com.example.haidar.toko.front_activity.GantiPasswordActivity;
-import com.example.haidar.toko.admin_activity.LoginActivity;
-import com.example.haidar.toko.R;
-import com.example.haidar.toko.front_activity.UserHadirActivity;
+import com.example.haidar.presensi.front_activity.PresensiMasuk;
+import com.example.haidar.presensi.front_activity.PresensiPulang;
+import com.example.haidar.presensi.front_activity.GantiPasswordActivity;
+import com.example.haidar.presensi.admin_activity.LoginActivity;
+import com.example.haidar.presensi.R;
+import com.example.haidar.presensi.front_activity.UserHadirActivity;
 
 /**
  * Created by haidar on 23/05/17.

@@ -1,4 +1,4 @@
-package com.example.haidar.toko.admin_activity;
+package com.example.haidar.presensi.admin_activity;
 
 /**
  * Created by haidar on 11/05/17.
@@ -14,9 +14,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.example.haidar.toko.R;
-import com.example.haidar.toko.config.RequestHandler;
-import com.example.haidar.toko.config.Config;
+import com.example.haidar.presensi.R;
+import com.example.haidar.presensi.config.RequestHandler;
+import com.example.haidar.presensi.config.Config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
