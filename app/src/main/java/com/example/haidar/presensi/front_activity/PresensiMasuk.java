@@ -15,7 +15,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -37,8 +36,9 @@ import android.widget.Toast;
 import com.example.haidar.presensi.R;
 import com.example.haidar.presensi.admin_activity.MainActivity;
 import com.example.haidar.presensi.config.BaseActivity;
-import com.example.haidar.presensi.config.Config;
-import com.example.haidar.presensi.config.RequestHandler;
+import com.example.haidar.presensi.config.CrudService;
+import com.example.haidar.presensi.config.Result;
+import com.example.haidar.presensi.config.Value;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -46,14 +46,13 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.example.haidar.presensi.R.id.latitude;
 import static java.lang.Math.round;
@@ -68,6 +67,10 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
     private String JSON_STRING;
     private  Spinner spinnerLokasi;
     private TextView textLatitude,textLongitude,textJarakLokasiAbsen,textBatasJarakAbsen;
+
+    private String encodedImage;
+
+    private ProgressDialog progress;
 
     // boolean flag to toggle periodic location updates
     private boolean mRequestingLocationUpdates = true;
@@ -96,6 +99,8 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
     private   List<String> latitude_lokasi_absen = new ArrayList<String>();
     private   List<String> longitude_lokasi_absen = new ArrayList<String>();
     private   List<String> data_batas_jarak_absen = new ArrayList<String>();
+    private List<Result> results = new ArrayList<>();
+
 
 
     // Location updates intervals in sec
@@ -135,15 +140,13 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
 
         fabMyLocation.setOnClickListener(this);
 
-
-
         // Spinner element
        spinnerLokasi = (Spinner) findViewById(R.id.lokasiAbsen);
 
         // Spinner click listener
         spinnerLokasi.setOnItemSelectedListener(this);
 
-        getJSON();
+        showLokasi();
 
         // First we need to check availability of play services
         if (checkPlayServices()) {
@@ -168,8 +171,6 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
 
     }
 
-
-
     // PROSES SETEALH AMBIL FOTO
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -182,6 +183,8 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
             imageView.setImageBitmap(bitmap);
             status_ambil_foto = true;
 
+            getStringImage(bitmap);
+
             prosesAbsenMasuk();
         }
     }
@@ -191,8 +194,27 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+         encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
+    }
+
+
+    private void alertSatuTombol(String alert){
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(alert);
+
+
+        alertDialogBuilder.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     private void konfirmasiSettingGps(){
@@ -271,7 +293,6 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
             }
 
 
-
         } else {
 
            String alert =  "(Couldn't get the location. Make sure location is enabled on the device)";
@@ -310,16 +331,6 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
     }
 
 
-    /**
-     * Method to toggle periodic location updates
-     * */
-    private void togglePeriodicLocationUpdates() {
-
-            mRequestingLocationUpdates = true;
-
-            startLocationUpdates();
-
-    }
     /**
      * Creating location request object
      * */
@@ -390,15 +401,19 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
         return true;
     }
 
-
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
         update_jarak_absen();
+
+
+        Toast.makeText(getApplicationContext(),
+                nama_lokasi_absen.get(position), Toast.LENGTH_LONG)
+                .show();
     }
+
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
-
 
     //proses absen masuk
     private void prosesAbsenMasuk(){
@@ -406,90 +421,21 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
         final String nik = editTextNik.getText().toString().trim();
         final String password = editTextPassword.getText().toString().trim();
         final String lokasi = spinnerLokasi.getSelectedItem().toString();
-
         latitude_saat_ini = 0;
         longitude_saat_ini = 0;
-
-
-
-        class ProsesAbsenMasuk extends AsyncTask<Bitmap,Void,String>{
-
-            ProgressDialog loading;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(PresensiMasuk.this,"Processing...","Wait...",false,false);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                if (s.equals("1")){
-                    Toast.makeText(getApplicationContext(), "Berhasil Absen Masuk", Toast.LENGTH_LONG).show();
-                    editTextNik.setText("");
-                    editTextNik.setError(null);
-                    editTextPassword.setText("");
-                    editTextNik.requestFocus();
-                    imageView.setImageBitmap(null);
-
-                }
-                else if(s.equals("2")){
-
-                    editTextPassword.setText("");
-                    imageView.setImageBitmap(null);
-                    editTextNik.requestFocus();
-                    editTextNik.setError( "Anda Sudah Melakukan Absen Masuk!" );
-                }
-                else if(s.equals("0")){
-
-                    imageView.setImageBitmap(null);
-                    editTextPassword.setText("");
-                    editTextNik.requestFocus();
-                    editTextNik.setError( "Username atau Password yang dimasukkan salah!" );
-                }
-
-
-            }
-
-            @Override
-            protected String doInBackground(Bitmap... params) {
-
-                Bitmap bitmap = params[0];
-                String uploadImage = getStringImage(bitmap);
-
-                HashMap<String,String> data = new HashMap<>();
-
-                data.put(Config.KEY_NIK,nik);
-                data.put(Config.KEY_PASSWORD,password);
-                data.put(Config.KEY_LOKASI,lokasi);
-                data.put(Config.KEY_LATITUDE,String.valueOf(latitude_saat_ini));
-                data.put(Config.KEY_LONGITUDE,String.valueOf(longitude_saat_ini));
-                data.put(Config.KEY_UPLOAD,uploadImage);
-
-                RequestHandler rh = new RequestHandler();
-                String res = rh.sendPostRequest(Config.URL_PROSES_ABSEN_MASUK, data);
-                return res;
-            }
-        }
 
         //untuk mengambil latitude dan longitude terbaru
         CheckGpsStatus();
 
         displayLocation();
 
-
         if (GpsStatus == true){
 
             if (jarak_ke_lokasi_absen <= batas_jarak_absen){
                 if (validasiForm() == true  && (latitude_saat_ini != 0  && latitude_saat_ini != 0  )){
                     if (bitmap != null) {
-                        ProsesAbsenMasuk pam = new ProsesAbsenMasuk();
-                        pam.execute(bitmap);
+                        absenMasuk(nik, password, lokasi);
                     }
-
-
                 }
             }
             else {
@@ -501,85 +447,80 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
 
     }
 
+    private void absenMasuk(String nik,String password,String lokasi) {
 
+        //membuat progress dialog
+        progress = new ProgressDialog(this);
+        progress.setCancelable(false);
+        progress.setMessage("Loading ...");
+        progress.show();
+
+
+        CrudService crud = new CrudService();
+        crud.absenMasuk(nik, password, lokasi, String.valueOf(latitude_saat_ini), String.valueOf(longitude_saat_ini), encodedImage, new Callback<Value>() {
+            @Override
+            public void onResponse(Call<Value> call, Response<Value> response) {
+                String value = response.body().getValue();
+                String message = response.body().getMessage();
+                progress.dismiss();
+                if (value.equals("1")) {
+                    alertSatuTombol(message);
+                    editTextNik.setText("");
+                    editTextPassword.setText("");
+                } else {
+                    alertSatuTombol(message);
+                    editTextPassword.setText("");
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
 
     //untuk menampilkan lokasi di spinner
     private void showLokasi(){
-        JSONObject jsonObject = null;
-        ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
-        try {
-            jsonObject = new JSONObject(JSON_STRING);
-            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
-
-            for(int i = 0; i<result.length(); i++){
-                JSONObject jo = result.getJSONObject(i);
-
-                String id = jo.getString(Config.TAG_LOKASI_ID);
-                String nama = jo.getString(Config.TAG_NAMA_LOKASI);
-                String latitude = jo.getString(Config.TAG_LATITUDE);
-                String longitude = jo.getString(Config.TAG_LONGITUDE);
-                String batas_jarak = jo.getString(Config.TAG_BATAS_JARAK);
 
 
+        CrudService crud = new CrudService();
+        crud.tampilLokasi(new Callback<Value>() {
+            @Override
+            public void onResponse(Call<Value> call, Response<Value> response) {
+                String value = response.body().getValue();
 
+                if (value.equals("1")) {
+                    results = response.body().getResult();
 
-                nama_lokasi_absen.add(nama);
-                latitude_lokasi_absen.add(latitude);
-                longitude_lokasi_absen.add(longitude);
-                data_batas_jarak_absen.add(batas_jarak);
+                    for (int i=0; i<results.size(); i++) {
 
+                        Result result = results.get(i);
 
+                        nama_lokasi_absen.add(result.getNama());
+                        latitude_lokasi_absen.add(result.getLatitude());
+                        longitude_lokasi_absen.add(result.getLongitude());
+                        data_batas_jarak_absen.add(result.getBatas_jarak_absen());
+                    }
+                    // Creating adapter for spinner
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(PresensiMasuk.this, android.R.layout.simple_spinner_item, nama_lokasi_absen);
+
+                    // Drop down layout style - list view with radio button
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                    // attaching data adapter to spinner
+                    spinnerLokasi.setAdapter(dataAdapter);
+
+                }
             }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        // Spinner Drop down elements
-
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nama_lokasi_absen);
-
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-        spinnerLokasi.setAdapter(dataAdapter);
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
 
     }
-
-    private void getJSON(){
-        class GetJSON extends AsyncTask<Void,Void,String>{
-
-            ProgressDialog loading;
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(PresensiMasuk.this,"Fetching Data","Wait...",false,false);
-                loading.setCancelable(false);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                JSON_STRING = s;
-                showLokasi();
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-                RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(Config.URL_GET_ALL_LOKASI);
-                return s;
-            }
-        }
-        GetJSON gj = new GetJSON();
-        gj.execute();
-    }
-
-
-
 
     private boolean validasiForm(){
 
@@ -600,7 +541,6 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener, Adap
 
         return true;
     }
-
 
     @Override
     public void onClick(View v) {
