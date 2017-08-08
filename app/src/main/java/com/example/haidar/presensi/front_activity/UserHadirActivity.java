@@ -1,108 +1,136 @@
 package com.example.haidar.presensi.front_activity;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.haidar.presensi.R;
+import com.example.haidar.presensi.adapter.RecyclerViewAdapter;
 import com.example.haidar.presensi.config.BaseActivity;
-import com.example.haidar.presensi.config.Config;
-import com.example.haidar.presensi.config.RequestHandler;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.haidar.presensi.config.CrudService;
+import com.example.haidar.presensi.config.Result;
+import com.example.haidar.presensi.config.Value;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
-public class UserHadirActivity extends BaseActivity {
+public class UserHadirActivity extends BaseActivity  implements SearchView.OnQueryTextListener{
 
-    private ListView listDataHadir;
 
-    private String JSON_STRING;
+    private List<Result> results = new ArrayList<>();
+    private RecyclerViewAdapter viewAdapter;
+
+    RecyclerView recyclerView;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_hadir);
 
-        listDataHadir = (ListView) findViewById(R.id.list_user_hadir);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        getJSON();
+        viewAdapter = new RecyclerViewAdapter(this, results);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(viewAdapter);
+
+        loadDataAbsen();
+
     }
 
-    private void showHadir(){
-
-        JSONObject jsonObject = null;
-        ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
-        try {
-            jsonObject = new JSONObject(JSON_STRING);
-            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
-
-            for(int i = 0; i<result.length(); i++){
-                JSONObject jo = result.getJSONObject(i);
-
-                String nama = jo.getString(Config.TAG_NAMA);
-                String nik = jo.getString(Config.TAG_NIK);
-                String waktu_masuk = jo.getString(Config.TAG_WAKTU_MASUK);
-
-                HashMap<String,String> lokasi = new HashMap<>();
-                lokasi.put(Config.TAG_NAMA,nama);
-                lokasi.put(Config.TAG_NIK,nik);
-                lokasi.put(Config.TAG_WAKTU_MASUK,waktu_masuk);
+    private void loadDataAbsen() {
 
 
-                list.add(lokasi);
+        CrudService crud = new CrudService();
+        crud.tampilAbsen(new Callback<Value>() {
+            @Override
+            public void onResponse(Call<Value> call, Response<Value> response) {
+
+                String value = response.body().getValue();
+                progressBar.setVisibility(View.GONE);
+                if (value.equals("1")) {
+                    results = response.body().getResult();
+                    viewAdapter = new RecyclerViewAdapter(UserHadirActivity.this, results);
+                    recyclerView.setAdapter(viewAdapter);
+                }
             }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void onFailure(Call call, Throwable t) {
 
-        ListAdapter adapter = new SimpleAdapter(
-                UserHadirActivity.this, list, R.layout.list_user_hadir,
-                new String[]{Config.TAG_NAMA,Config.TAG_NIK,Config.TAG_WAKTU_MASUK},
-                new int[]{R.id.nama,R.id.nik, R.id.waktu_masuk});
+                Toast.makeText(UserHadirActivity.this, "Terjadi Kesalahan!", Toast.LENGTH_SHORT).show();
 
-        listDataHadir.setAdapter(adapter);
+                t.printStackTrace();
+            }
+        });
     }
 
-    private void getJSON(){
-        class GetJSON extends AsyncTask<Void,Void,String> {
-
-            ProgressDialog loading;
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(UserHadirActivity.this,"Fetching Data","Wait...",false,false);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                JSON_STRING = s;
-                showHadir();
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-
-                RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(Config.URL_USER_HADIR);
-                return s;
-            }
-        }
-        GetJSON gj = new GetJSON();
-        gj.execute();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadDataAbsen();
     }
 
 
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
 
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        recyclerView.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
+        CrudService crud = new CrudService();
+        crud.cariAbsen(newText, new Callback<Value>() {
+            @Override
+            public void onResponse(Call<Value> call, Response<Value> response) {
+                String value = response.body().getValue();
+                progressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                if (value.equals("1")) {
+                    results = response.body().getResult();
+                    viewAdapter = new RecyclerViewAdapter(UserHadirActivity.this, results);
+                    recyclerView.setAdapter(viewAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Toast.makeText(UserHadirActivity.this, "Terjadi Kesalahan!", Toast.LENGTH_SHORT).show();
+
+                t.printStackTrace();
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        final MenuItem item = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setQueryHint("Cari Nama Karyawan");
+        searchView.setIconified(false);
+        searchView.setOnQueryTextListener(this);
+        return true;
+    }
 }
