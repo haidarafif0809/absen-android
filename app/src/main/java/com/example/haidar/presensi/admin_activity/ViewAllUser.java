@@ -4,112 +4,74 @@ package com.example.haidar.presensi.admin_activity;
  * Created by haidar on 11/05/17.
  */
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.ProgressBar;
 
 import com.example.haidar.presensi.R;
-import com.example.haidar.presensi.config.RequestHandler;
-import com.example.haidar.presensi.config.Config;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.haidar.presensi.adapter.RecyclerUserAdapter;
+import com.example.haidar.presensi.config.CrudService;
+import com.example.haidar.presensi.config.Result;
+import com.example.haidar.presensi.config.Value;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
-public class ViewAllUser extends AppCompatActivity implements ListView.OnItemClickListener {
+public class ViewAllUser extends AppCompatActivity  {
 
-
-    private ListView listDataUser;
-
-    private String JSON_STRING;
-
+    private ProgressBar progressBar;
+    private RecyclerView recyclerView;
+    private List<Result> results = new ArrayList<>();
+    private  RecyclerUserAdapter viewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_user);
-        listDataUser = (ListView) findViewById(R.id.list_data_user);
-        listDataUser.setOnItemClickListener(this);
-        getJSON();
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar_user);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewUser);
+
+        viewAdapter = new RecyclerUserAdapter(this, results);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(viewAdapter);
+
+        showUser();
     }
 
     private void showUser(){
-        JSONObject jsonObject = null;
-        ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String, String>>();
-        try {
-            jsonObject = new JSONObject(JSON_STRING);
-            JSONArray result = jsonObject.getJSONArray(Config.TAG_JSON_ARRAY);
 
-            for(int i = 0; i<result.length(); i++){
-                JSONObject jo = result.getJSONObject(i);
-
-                String id = jo.getString(Config.TAG_ID);
-                String nama = jo.getString(Config.TAG_NAMA);
-                String nik = jo.getString(Config.TAG_NIK);
-
-                HashMap<String,String> lokasi = new HashMap<>();
-                lokasi.put(Config.TAG_NAMA,nama);
-                lokasi.put(Config.TAG_NIK,nik);
-                lokasi.put(Config.TAG_ID,id);
-
-                list.add(lokasi);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        ListAdapter adapter = new SimpleAdapter(
-                ViewAllUser.this, list, R.layout.list_data_user,
-                new String[]{Config.TAG_ID,Config.TAG_NIK,Config.TAG_NAMA},
-                new int[]{R.id.id,R.id.nik, R.id.nama});
-
-        listDataUser.setAdapter(adapter);
-    }
-
-    private void getJSON(){
-        class GetJSON extends AsyncTask<Void,Void,String> {
-
-            ProgressDialog loading;
+        CrudService crud = new CrudService();
+        crud.tampilUser(new Callback<Value>() {
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(ViewAllUser.this,"Fetching Data","Wait...",false,false);
+            public void onResponse(Call<Value> call, Response<Value> response) {
+                String value = response.body().getValue();
+                progressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                if (value.equals("1")) {
+                    results = response.body().getResult();
+                    viewAdapter = new RecyclerUserAdapter(ViewAllUser.this, results);
+                    recyclerView.setAdapter(viewAdapter);
+                }
             }
 
             @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                JSON_STRING = s;
-                showUser();
+            public void onFailure(Call call, Throwable t) {
+            t.printStackTrace();
             }
+        });
 
-            @Override
-            protected String doInBackground(Void... params) {
-                RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(Config.URL_GET_ALL_USER);
-                return s;
-            }
-        }
-        GetJSON gj = new GetJSON();
-        gj.execute();
+
     }
 
-
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-    }
 }
