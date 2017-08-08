@@ -11,74 +11,69 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-
-
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_clock"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name="android.support.multidex.MultiDexApplication"
-        >
-
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity
-            android:name="com.example.haidar.presensi.front_activity.PresensiMasuk"
-            android:label="@string/presensi_masuk">
 
+        <activity
+            android:name=".front_activity.PresensiMasuk"
+            android:label="@string/presensi_masuk">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-
         </activity>
         <activity
-            android:name="com.example.haidar.presensi.front_activity.PresensiPulang"
+            android:name=".front_activity.PresensiPulang"
             android:label="@string/presensi_pulang" />
-
-
         <activity
-            android:name="com.example.haidar.presensi.admin_activity.MainActivity"
+            android:name=".admin_activity.MainActivity"
             android:label="Admin"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.example.haidar.presensi.admin_activity.LokasiAbsen"
+            android:name=".admin_activity.LokasiAbsen"
             android:label="Tambah Lokasi Absen">
             0.
         </activity>
         <activity
-            android:name="com.example.haidar.presensi.admin_activity.LoginActivity"
+            android:name=".admin_activity.LoginActivity"
             android:label="@string/app_name" />
         <activity
-            android:name="com.example.haidar.presensi.admin_activity.ViewAllLokasi"
+            android:name=".admin_activity.ViewAllLokasi"
             android:label="Data Lokasi Absen" />
         <activity
-            android:name="com.example.haidar.presensi.admin_activity.ViewAllUser"
-            android:label="Data User" />
+            android:name=".admin_activity.ViewAllUser"
+            android:label="Data User">
+
+        </activity>
         <activity
-            android:name="com.example.haidar.presensi.admin_activity.ViewLokasiAbsen"
+            android:name=".admin_activity.ViewLokasiAbsen"
             android:label="Ubah Lokasi Absen"
             android:noHistory="true" />
-
         <activity
-            android:name="com.example.haidar.presensi.admin_activity.User"
+            android:name=".admin_activity.User"
             android:label="Tambah User" />
         <activity
-            android:name="com.example.haidar.presensi.front_activity.UserHadirActivity"
+            android:name=".front_activity.UserHadirActivity"
             android:label="User Hadir"
-            android:noHistory="true" />
-        <activity android:name="com.example.haidar.presensi.admin_activity.ViewUserActivity" />
-        <activity
-            android:name="com.example.haidar.presensi.front_activity.GantiPasswordActivity"
-            android:label="Ganti Password"
             android:noHistory="true"></activity>
-        <activity android:name="com.example.haidar.presensi.config.LocationActivity">
+        <activity android:name=".admin_activity.ViewUserActivity" />
+        <activity
+            android:name=".front_activity.GantiPasswordActivity"
+            android:label="Ganti Password"
+            android:noHistory="true" />
+        <activity android:name=".config.LocationActivity"></activity>
+        <activity android:name=".testing.JsonArrayActivity">
 
         </activity>
     </application>
