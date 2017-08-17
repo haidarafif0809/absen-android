@@ -18,8 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.haidar.presensi.front_activity.PresensiMasuk;
-import com.example.haidar.presensi.front_activity.PresensiPulang;
+import com.example.haidar.presensi.front_activity.Presensi;
 import com.example.haidar.presensi.R;
 import com.example.haidar.presensi.front_activity.UserHadirActivity;
 import com.example.haidar.presensi.config.Config;
@@ -148,12 +147,9 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     public boolean onOptionsItemSelected(final MenuItem item) {
 
         if (item.getItemId() ==  R.id.absen_masuk) {
-            startActivity( new Intent(this, PresensiMasuk.class));
+            startActivity( new Intent(this, Presensi.class));
         }
-        if (item.getItemId() ==  R.id.absen_pulang) {
-            startActivity( new Intent(this, PresensiPulang.class));
 
-        }
         if (item.getItemId() ==  R.id.admin) {
             startActivity( new Intent(this, LoginActivity.class));
 

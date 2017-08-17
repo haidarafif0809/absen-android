@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.haidar.presensi.front_activity.PresensiMasuk;
+import com.example.haidar.presensi.front_activity.Presensi;
 import com.example.haidar.presensi.R;
 
 public class MainActivity extends AppCompatActivity
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    startActivity(new Intent(MainActivity.this,PresensiMasuk.class));
+                    startActivity(new Intent(MainActivity.this,Presensi.class));
                     finish();
                 }
             });
