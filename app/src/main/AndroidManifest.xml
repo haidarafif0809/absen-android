@@ -24,18 +24,14 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".front_activity.PresensiMasuk"
-            android:label="@string/presensi_masuk">
+            android:name=".front_activity.Presensi"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity
-            android:name=".front_activity.PresensiPulang"
-            android:label="@string/presensi_pulang" />
         <activity
             android:name=".admin_activity.MainActivity"
             android:label="Admin"
@@ -53,9 +49,7 @@
             android:label="Data Lokasi Absen" />
         <activity
             android:name=".admin_activity.ViewAllUser"
-            android:label="Data User">
-
-        </activity>
+            android:label="Data User"></activity>
         <activity
             android:name=".admin_activity.ViewLokasiAbsen"
             android:label="Ubah Lokasi Absen"
@@ -66,14 +60,15 @@
         <activity
             android:name=".front_activity.UserHadirActivity"
             android:label="User Hadir"
-            android:noHistory="true"></activity>
+            android:noHistory="true" />
         <activity android:name=".admin_activity.ViewUserActivity" />
         <activity
             android:name=".front_activity.GantiPasswordActivity"
             android:label="Ganti Password"
             android:noHistory="true" />
-        <activity android:name=".config.LocationActivity"></activity>
-        <activity android:name=".testing.JsonArrayActivity">
+        <activity android:name=".config.LocationActivity" />
+        <activity android:name=".testing.JsonArrayActivity"></activity>
+        <activity android:name=".testing.RequestPermission">
 
         </activity>
     </application>

@@ -57,6 +57,9 @@ public class CrudService {
     public void cariAbsen(String search, Callback callback){
         registerApi.searchAbsen(search).enqueue(callback);
     }
+    public void statusAbsen(String nik, Callback callback){
+        registerApi.statusAbsen(nik).enqueue(callback);
+    }
 
     public void absenMasuk(String nik,String password,String lokasi,String latidue,String longitude, String image,Callback callback){
         registerApi.absenMasuk(nik,password,lokasi,latidue,longitude,image).enqueue(callback);

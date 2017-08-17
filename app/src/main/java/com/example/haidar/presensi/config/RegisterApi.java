@@ -24,6 +24,9 @@ public interface RegisterApi {
     @FormUrlEncoded
     @POST("cari_data_absen_retrofit.php")
     Call<Value> searchAbsen(@Field("search") String search);
+    @FormUrlEncoded
+    @POST("cek_absen.php")
+    Call<Value> statusAbsen(@Field("nik") String nik);
 
     @FormUrlEncoded
     @POST("absen_masuk_retrofit.php")

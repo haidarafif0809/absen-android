@@ -62,7 +62,7 @@ import static java.lang.Math.round;
 import static java.sql.Types.NULL;
 
 
-public class PresensiMasuk extends BaseActivity implements OnClickListener,
+public class Presensi extends BaseActivity implements OnClickListener,
         AdapterView.OnItemSelectedListener,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks,
@@ -163,7 +163,12 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener,
         // Spinner click listener
         spinnerLokasi.setOnItemSelectedListener(this);
         reqPermission();
+
         showLokasi();
+
+
+        CheckGpsStatus();
+
         // First we need to check availability of play services
         if (checkPlayServices()) {
 
@@ -171,11 +176,10 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener,
             buildGoogleApiClient();
 
         }
-        CheckGpsStatus();
 
 
     }
-
+    //mengecek status absen apakah masuk atau sudah pulang
     private void cekStatusAbsen(String s) {
 
         if (!s.equals("")){
@@ -213,13 +217,11 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener,
         }
     }
 
-
     //PROSES UNTUK MENGAKTIFKAN KAMERA
     private void ambilFoto() {
 
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
-
 
     }
 
@@ -237,11 +239,11 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener,
 
             getStringImage(bitmap);
 
-            prosesAbsenMasuk();
+            prosesAbsen();
         }
     }
 
-
+    //mengubah foto menjadi bitmap agar bisa di kirim ke server
     public String getStringImage(Bitmap bmp){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -318,6 +320,7 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener,
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     android.Manifest.permission.ACCESS_FINE_LOCATION)) {
 
+                reqPermission();
 
             } else {
 
@@ -400,14 +403,8 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener,
     protected void startLocationUpdates() {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+
+            reqPermission();
         }
         createLocationRequest();
         LocationServices.FusedLocationApi.requestLocationUpdates(
@@ -456,10 +453,6 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener,
 
         update_jarak_absen();
 
-
-        Toast.makeText(getApplicationContext(),
-                nama_lokasi_absen.get(position), Toast.LENGTH_LONG)
-                .show();
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {
@@ -467,7 +460,7 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener,
     }
 
     //proses absen masuk
-    private void prosesAbsenMasuk(){
+    private void prosesAbsen(){
 
         final String nik = editTextNik.getText().toString().trim();
         final String password = editTextPassword.getText().toString().trim();
@@ -594,7 +587,7 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener,
                         data_batas_jarak_absen.add(result.getBatas_jarak_absen());
                     }
                     // Creating adapter for spinner
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(PresensiMasuk.this, android.R.layout.simple_spinner_item, nama_lokasi_absen);
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(Presensi.this, android.R.layout.simple_spinner_item, nama_lokasi_absen);
 
                     // Drop down layout style - list view with radio button
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -704,7 +697,7 @@ public class PresensiMasuk extends BaseActivity implements OnClickListener,
         textBatasJarakAbsen.setText(batas_jarak);
 
         // Showing selected spinner item
-        Toast.makeText(PresensiMasuk.this, "Jarak Ke Lokasi Absen : " + String.valueOf(round(jarak_ke_lokasi_absen)) + " m", Toast.LENGTH_LONG).show();
+        Toast.makeText(Presensi.this, "Jarak Ke Lokasi Absen : " + String.valueOf(round(jarak_ke_lokasi_absen)) + " m", Toast.LENGTH_LONG).show();
 
     }
 
