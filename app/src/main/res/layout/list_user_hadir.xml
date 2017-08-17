@@ -18,9 +18,10 @@
             android:padding="16dp"
             >
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@mipmap/ic_jam"/>
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@mipmap/ic_jam"
+                android:id="@+id/fotoMasuk"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Haidar Afif Maulana "
-                        android:textSize="24dp"
+                        android:textSize="22sp"
                         android:textStyle="bold"
                         android:id="@+id/nama"/>
 
@@ -44,11 +45,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="NIK : "
-                    android:textSize="20dp"/>
 
                 <TextView
                     android:id="@+id/nik"
@@ -66,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="08:00 2017-01-01 "
-                    android:textSize="24sp"
+                    android:textSize="20sp"
                     />
 
 
