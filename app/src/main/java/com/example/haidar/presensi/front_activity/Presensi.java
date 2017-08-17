@@ -189,7 +189,6 @@ public class Presensi extends BaseActivity implements OnClickListener,
                 @Override
                 public void onResponse(Call<Value> call, Response<Value> response) {
                     String value = response.body().getValue();
-                    String message = response.body().getMessage();
                     //nik salah
                     if (value.equals("0")) {
 
@@ -198,11 +197,13 @@ public class Presensi extends BaseActivity implements OnClickListener,
                     }
                     //sudah absen masuk
                     else if(value.equals("2")) {
+                        buttonMasuk.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_pulang, 0, 0, 0);
                         buttonMasuk.setText("Presensi Pulang");
                         STATUS_ABSEN = 1;
                     }
                     //sudah absen pulang
                     else if(value.equals("3")) {
+                        buttonMasuk.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_kerja, 0, 0, 0);
                         buttonMasuk.setText("Presensi Masuk");
                         STATUS_ABSEN = 2;
                     }
