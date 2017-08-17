@@ -75,7 +75,7 @@ public class GantiPasswordActivity extends BaseActivity implements View.OnClickL
                 else if (s.equals("1")){
                     Toast.makeText(GantiPasswordActivity.this, "Berhasil Mengganti Password", Toast.LENGTH_LONG).show();
                     //pindah ke absen masuk
-                    startActivity(new Intent(GantiPasswordActivity.this,PresensiMasuk.class));
+                    startActivity(new Intent(GantiPasswordActivity.this,Presensi.class));
 
                 }
 
