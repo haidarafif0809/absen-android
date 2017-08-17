@@ -7,4 +7,26 @@
         app:showAsAction="always"
         app:actionViewClass="android.support.v7.widget.SearchView"
         android:title="Search"/>
+    <item
+        android:id="@+id/absen_masuk"
+        android:orderInCategory="100"
+        android:title="Presensi"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/user_hadir"
+        android:orderInCategory="100"
+        android:title="User Hadir"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_ganti_password"
+        android:orderInCategory="100"
+        android:title="Ganti Password"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/admin"
+        android:orderInCategory="100"
+        android:title="Admin"
+        app:showAsAction="never" />
 </menu>

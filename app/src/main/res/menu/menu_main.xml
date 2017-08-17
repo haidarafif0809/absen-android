@@ -4,13 +4,7 @@
     <item
         android:id="@+id/absen_masuk"
         android:orderInCategory="100"
-        android:title="Absen Masuk"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/absen_pulang"
-        android:orderInCategory="100"
-        android:title="Absen Pulang"
+        android:title="Presensi"
         app:showAsAction="never" />
     <item
         android:id="@+id/user_hadir"
