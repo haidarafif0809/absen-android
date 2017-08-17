@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">Presensi v1.5.0</string>
-    <string name="presensi_masuk">Presensi Masuk v1.0.5 </string>
-    <string name="presensi_pulang">Presensi Pulang v1.0.5 </string>
+    <string name="app_name">Presensi v1.5.1</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
