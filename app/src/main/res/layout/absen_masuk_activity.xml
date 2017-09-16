@@ -22,14 +22,22 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:drawableLeft="@mipmap/ic_password_black"
-
         android:id="@+id/editTextPassword" />
+    <EditText
+        android:hint="Keterangan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textLongMessage"
+        android:drawableLeft="@mipmap/ic_keterangan"
+        android:id="@+id/editTextKeterangan" />
     <TextView
+        android:layout_marginTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lokasi Absen" />
 
     <Spinner
+
         android:id="@+id/lokasiAbsen"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -45,7 +53,8 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Jarak Ke Lokasi Absen (meter) : " />
+            android:text="Jarak Ke Lokasi Absen (meter) : "
+            />
 
         <TextView
             android:id="@+id/jarakKeLokasi"

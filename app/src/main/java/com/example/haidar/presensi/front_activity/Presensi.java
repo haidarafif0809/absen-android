@@ -71,7 +71,7 @@ public class Presensi extends BaseActivity implements OnClickListener,
 
     private static final int REQUEST_PERMISSIONS = 20;
     private Button buttonMasuk;
-    private EditText editTextNik, editTextPassword;
+    private EditText editTextNik, editTextPassword,editTextKeterangan;
     private String JSON_STRING;
     private  Spinner spinnerLokasi;
     private TextView textJarakLokasiAbsen,textBatasJarakAbsen;
@@ -138,6 +138,7 @@ public class Presensi extends BaseActivity implements OnClickListener,
         //Initializing views
         editTextNik = (EditText) findViewById(R.id.editTextNik);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        editTextKeterangan = (EditText) findViewById(R.id.editTextKeterangan);
         textJarakLokasiAbsen = (TextView) findViewById(R.id.jarakKeLokasi);
         textBatasJarakAbsen = (TextView) findViewById(R.id.textBatasJarakAbsen);
         buttonMasuk = (Button) findViewById(R.id.buttonMasuk);
@@ -456,6 +457,7 @@ public class Presensi extends BaseActivity implements OnClickListener,
 
     }
 
+
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
@@ -465,6 +467,7 @@ public class Presensi extends BaseActivity implements OnClickListener,
 
         final String nik = editTextNik.getText().toString().trim();
         final String password = editTextPassword.getText().toString().trim();
+        final String keterangan = editTextKeterangan.getText().toString().trim();
         final String lokasi = spinnerLokasi.getSelectedItem().toString();
         latitude_saat_ini = 0;
         longitude_saat_ini = 0;
@@ -480,10 +483,10 @@ public class Presensi extends BaseActivity implements OnClickListener,
                 if (validasiForm() == true  && (latitude_saat_ini != 0  && latitude_saat_ini != 0  )){
                     if (bitmap != null) {
                         if(STATUS_ABSEN == 2){
-                            absenMasuk(nik, password, lokasi);
+                            absenMasuk(nik, password, lokasi,keterangan);
                         }
                         else if (STATUS_ABSEN == 1){
-                            absenPulang(nik,password,lokasi);
+                            absenPulang(nik,password,lokasi,keterangan);
                         }
 
                     }
@@ -498,17 +501,17 @@ public class Presensi extends BaseActivity implements OnClickListener,
 
     }
 
-    private void absenMasuk(String nik,String password,String lokasi) {
+    private void absenMasuk(String nik, String password, String lokasi, String keterangan) {
 
         //membuat progress dialog
         progress = new ProgressDialog(this);
         progress.setCancelable(false);
-        progress.setMessage("Loading ...");
+        progress.setMessage("Proses Absen Masuk ...");
         progress.show();
 
 
         CrudService crud = new CrudService();
-        crud.absenMasuk(nik, password, lokasi, String.valueOf(latitude_saat_ini), String.valueOf(longitude_saat_ini), encodedImage, new Callback<Value>() {
+        crud.absenMasuk(nik, password, lokasi, String.valueOf(latitude_saat_ini), String.valueOf(longitude_saat_ini), encodedImage,keterangan, new Callback<Value>() {
             @Override
             public void onResponse(Call<Value> call, Response<Value> response) {
                 String value = response.body().getValue();
@@ -516,8 +519,7 @@ public class Presensi extends BaseActivity implements OnClickListener,
                 progress.dismiss();
                 if (value.equals("1")) {
                     alertSatuTombol(message);
-                    editTextNik.setText("");
-                    editTextPassword.setText("");
+                    kosongkanForm();
                 } else {
                     alertSatuTombol(message);
                     editTextPassword.setText("");
@@ -526,21 +528,23 @@ public class Presensi extends BaseActivity implements OnClickListener,
 
             @Override
             public void onFailure(Call call, Throwable t) {
+                progress.dismiss();
+                alertSatuTombol("Terjadi Kesalahan! Restart Aplikasi dan Cek Koneksi Internet!");
                 t.printStackTrace();
             }
         });
     }
 
-    private  void absenPulang(String nik,String password,String lokasi){
+    private  void absenPulang(String nik, String password, String lokasi, String keterangan){
         //membuat progress dialog
         progress = new ProgressDialog(this);
         progress.setCancelable(false);
-        progress.setMessage("Loading ...");
+        progress.setMessage("Proses Absen Pulang ...");
         progress.show();
 
 
         CrudService crud = new CrudService();
-        crud.absenPulang(nik, password, lokasi, String.valueOf(latitude_saat_ini), String.valueOf(longitude_saat_ini), encodedImage, new Callback<Value>() {
+        crud.absenPulang(nik, password, lokasi, String.valueOf(latitude_saat_ini), String.valueOf(longitude_saat_ini), encodedImage, keterangan,new Callback<Value>() {
             @Override
             public void onResponse(Call<Value> call, Response<Value> response) {
                 String value = response.body().getValue();
@@ -548,8 +552,7 @@ public class Presensi extends BaseActivity implements OnClickListener,
                 progress.dismiss();
                 if (value.equals("1")) {
                     alertSatuTombol(message);
-                    editTextNik.setText("");
-                    editTextPassword.setText("");
+                    kosongkanForm();
                 } else {
                     alertSatuTombol(message);
 
@@ -559,20 +562,37 @@ public class Presensi extends BaseActivity implements OnClickListener,
 
             @Override
             public void onFailure(Call call, Throwable t) {
+                progress.dismiss();
+                alertSatuTombol("Terjadi Kesalahan! Restart Aplikasi dan Cek Koneksi Internet!");
                 t.printStackTrace();
             }
         });
 
+    }
+
+
+    private  void kosongkanForm(){
+
+        editTextNik.setText("");
+        editTextPassword.setText("");
+        editTextKeterangan.setText("");
+        imageView.setImageBitmap(null);
     }
 
     //untuk menampilkan lokasi di spinner
     private void showLokasi(){
 
+        progress = new ProgressDialog(this);
+        progress.setCancelable(false);
+        progress.setMessage("Loading ...");
+        progress.show();
 
         CrudService crud = new CrudService();
         crud.tampilLokasi(new Callback<Value>() {
             @Override
             public void onResponse(Call<Value> call, Response<Value> response) {
+
+                progress.dismiss();
                 String value = response.body().getValue();
 
                 if (value.equals("1")) {
@@ -601,7 +621,10 @@ public class Presensi extends BaseActivity implements OnClickListener,
 
             @Override
             public void onFailure(Call call, Throwable t) {
+                progress.dismiss();
+                alertSatuTombol("Terjadi Kesalahan! Restart Aplikasi dan Cek Koneksi Internet!");
                 t.printStackTrace();
+
             }
         });
 

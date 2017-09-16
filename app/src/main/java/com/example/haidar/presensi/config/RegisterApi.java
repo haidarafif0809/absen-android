@@ -35,7 +35,8 @@ public interface RegisterApi {
                        @Field("lokasi") String lokasi,
                        @Field("latitude") String latitude ,
                        @Field("longitude") String longitude,
-                       @Field("image") String image);
+                       @Field("image") String image,
+                       @Field("keterangan") String keterangan);
     @FormUrlEncoded
     @POST("absen_pulang_retrofit.php")
     Call<Value> absenPulang(@Field("nik") String nik,
@@ -43,7 +44,8 @@ public interface RegisterApi {
                        @Field("lokasi") String lokasi,
                        @Field("latitude") String latitude ,
                        @Field("longitude") String longitude,
-                       @Field("image") String image);
+                       @Field("image") String image,
+                            @Field("keterangan") String keterangan);
 
 
 }

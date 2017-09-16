@@ -61,10 +61,10 @@ public class CrudService {
         registerApi.statusAbsen(nik).enqueue(callback);
     }
 
-    public void absenMasuk(String nik,String password,String lokasi,String latidue,String longitude, String image,Callback callback){
-        registerApi.absenMasuk(nik,password,lokasi,latidue,longitude,image).enqueue(callback);
+    public void absenMasuk(String nik,String password,String lokasi,String latidue,String longitude, String image,String keterangan,Callback callback){
+        registerApi.absenMasuk(nik,password,lokasi,latidue,longitude,image,keterangan).enqueue(callback);
     }
-    public void absenPulang(String nik,String password,String lokasi,String latidue,String longitude, String image,Callback callback){
-        registerApi.absenPulang(nik,password,lokasi,latidue,longitude,image).enqueue(callback);
+    public void absenPulang(String nik,String password,String lokasi,String latidue,String longitude, String image,String keterangan,Callback callback){
+        registerApi.absenPulang(nik,password,lokasi,latidue,longitude,image,keterangan).enqueue(callback);
     }
 }
