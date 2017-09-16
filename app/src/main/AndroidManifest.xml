@@ -66,7 +66,6 @@
             android:name=".front_activity.GantiPasswordActivity"
             android:label="Ganti Password"
             android:noHistory="true" />
-        <activity android:name=".config.LocationActivity" />
         <activity android:name=".testing.JsonArrayActivity"></activity>
         <activity android:name=".testing.RequestPermission">
 
